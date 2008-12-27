@@ -63,7 +63,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="bin/kanjimemo_d.exe"
+				OutputFile="../bin/kanjimemo_d.exe"
 				LinkIncremental="2"
 				DelayLoadDLLs=""
 				GenerateDebugInformation="true"
@@ -140,7 +140,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="bin/kanjimemo.exe"
+				OutputFile="../bin/kanjimemo.exe"
 				LinkIncremental="1"
 				DelayLoadDLLs=""
 				GenerateDebugInformation="true"
