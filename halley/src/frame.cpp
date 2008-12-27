@@ -23,9 +23,9 @@ using namespace Halley;
 
 ///////////////
 // Constructor
-Frame::Frame()
+Frame::Frame(std::string _name)
+: name(_name), hasBeenInit(false)
 {
-	hasBeenInit = false;
 }
 
 

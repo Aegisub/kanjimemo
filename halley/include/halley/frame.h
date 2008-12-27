@@ -28,7 +28,10 @@ namespace Halley {
 
 	// Frame class
 	class Frame : public IFrameParent {
+		friend class Game;
+
 	private:
+		std::string name;
 		wpFrameParent parent;
 		wpFrame weakThis;
 		std::list<spFrame> children;
@@ -36,26 +39,27 @@ namespace Halley {
 
 		void Destroy(spFrame newFrame);
 
+		void TryInit();
+		void TryDeInit();
+
+		void Update(float time);
+		void Render();
+		void ChildFrameChange(spFrame from,spFrame to);
+		void SetParent(wpFrameParent parent, wpFrame weakThis);
+
 	protected:
 		virtual void Init() {}
 		virtual void DeInit() {}
 		virtual void DoUpdate(float time)=0;
 		virtual void DoRender()=0;
 
-	public:
-		Frame();
-		virtual ~Frame();
-
-		void TryInit();
-		void TryDeInit();
-
-		void Update(float time);
-		void Render();
 		void Switch(spFrame to);
 		void Die();
 		void AddChild(spFrame child);
-		void ChildFrameChange(spFrame from,spFrame to);
-		void SetParent(wpFrameParent parent, wpFrame weakThis);
+
+	public:
+		Frame(std::string name);
+		virtual ~Frame();
 	};
 
 }

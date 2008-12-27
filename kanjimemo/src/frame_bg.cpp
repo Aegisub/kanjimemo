@@ -1,6 +1,13 @@
 #include "halley/halley.h"
 #include "frame_bg.h"
 
+
+FrameBackground::FrameBackground()
+: Frame("background")
+{
+}
+
+
 void FrameBackground::DoUpdate(float time)
 {
 

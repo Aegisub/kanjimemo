@@ -213,6 +213,18 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="Sprites"
+			>
+			<File
+				RelativePath=".\src\sprite.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\include\halley\sprite.h"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>
