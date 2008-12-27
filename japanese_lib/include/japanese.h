@@ -1,0 +1,8 @@
+#include "kanji.h"
+#include "kanji_manager.h"
+#include "roomaji.h"
+#include "roomaji_manager.h"
+#include "word.h"
+#include "word_manager.h"
+#include "word_reading.h"
+#include "kana_converter.h"
