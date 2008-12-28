@@ -16,24 +16,23 @@
 
 \*********************************************************/
 
-#include "sprite.h"
-#include "SDL_opengl.h"
-using namespace Halley;
+#pragma once
 
+namespace Halley {
+	class Random {
+	public:
+		template <typename T>
+		T Get(T max)
+		{
+			return (T)(GetDouble()*max);
+		}
 
-////////////////////
-// Draw this sprite
-void Sprite::Draw()
-{
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
+		template <typename T>
+		T Get(T min, T max)
+		{
+			return (T)(GetDouble()*(max-min) + min);
+		}
 
-	glTranslatef(pos.x,pos.y,0);
-	glRotatef(rotation.GetDegrees(),0,0,1);
-	glTranslatef(-pivot.x,-pivot.y,0);
-	glScalef(scale.x,scale.y,1);
-	
-	DoDraw();
-
-	glPopMatrix();
+		double GetDouble();
+	};
 }

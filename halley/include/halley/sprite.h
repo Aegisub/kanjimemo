@@ -18,6 +18,7 @@
 
 #pragma once
 #include "vector2d.h"
+#include "interfaces.h"
 
 namespace Halley {
 	class Sprite {
@@ -31,7 +32,7 @@ namespace Halley {
 		virtual void DoDraw() {}
 
 	public:
-		virtual void Update() {}
+		virtual void Update(float time) {}
 		void Draw();
 
 		Vector2f GetPosition() const { return pos; }

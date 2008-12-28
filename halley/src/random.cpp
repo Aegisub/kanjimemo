@@ -16,24 +16,11 @@
 
 \*********************************************************/
 
-#include "sprite.h"
-#include "SDL_opengl.h"
+#include "random.h"
+#include <cstdlib>
 using namespace Halley;
 
-
-////////////////////
-// Draw this sprite
-void Sprite::Draw()
+double Random::GetDouble()
 {
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-
-	glTranslatef(pos.x,pos.y,0);
-	glRotatef(rotation.GetDegrees(),0,0,1);
-	glTranslatef(-pivot.x,-pivot.y,0);
-	glScalef(scale.x,scale.y,1);
-	
-	DoDraw();
-
-	glPopMatrix();
+	return (double)rand() / (double)RAND_MAX;
 }

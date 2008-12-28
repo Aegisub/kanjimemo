@@ -189,6 +189,18 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\random.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\include\halley\random.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\halley\rect.h"
+				>
+			</File>
+			<File
 				RelativePath=".\include\halley\vector2d.h"
 				>
 			</File>
@@ -222,6 +234,14 @@
 			</File>
 			<File
 				RelativePath=".\include\halley\sprite.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\sprite_collection.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\include\halley\sprite_collection.h"
 				>
 			</File>
 		</Filter>

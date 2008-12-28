@@ -26,6 +26,7 @@ private:
 	int step;
 
 public:
+	FrameDebug() : Halley::Frame("debug") {}
 	void Init();
 	void DeInit();
 	void DoUpdate(float time);

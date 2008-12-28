@@ -22,20 +22,18 @@
 #include "interfaces.h"
 
 namespace Halley {
-	class Frame;
-	typedef shared_ptr<Frame> spFrame;
-	typedef weak_ptr<Frame> wpFrame;
-
 	// Frame class
 	class Frame : public IFrameParent {
 		friend class Game;
 
 	private:
 		std::string name;
+		bool hasBeenInit;
+
 		wpFrameParent parent;
 		wpFrame weakThis;
+
 		std::list<spFrame> children;
-		bool hasBeenInit;
 
 		void Destroy(spFrame newFrame);
 

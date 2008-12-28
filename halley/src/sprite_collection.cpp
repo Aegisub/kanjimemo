@@ -16,24 +16,20 @@
 
 \*********************************************************/
 
-#include "sprite.h"
-#include "SDL_opengl.h"
+#include "sprite_collection.h"
 using namespace Halley;
 
-
-////////////////////
-// Draw this sprite
-void Sprite::Draw()
+void SpriteCollection::Update(float time)
 {
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
+	for (std::list<spSprite>::iterator cur = begin(); cur != end(); cur++) {
+		(*cur)->Update(time);
+	}
+}
 
-	glTranslatef(pos.x,pos.y,0);
-	glRotatef(rotation.GetDegrees(),0,0,1);
-	glTranslatef(-pivot.x,-pivot.y,0);
-	glScalef(scale.x,scale.y,1);
-	
-	DoDraw();
 
-	glPopMatrix();
+void SpriteCollection::Draw()
+{
+	for (std::list<spSprite>::iterator cur = begin(); cur != end(); cur++) {
+		(*cur)->Draw();
+	}
 }

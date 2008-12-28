@@ -212,7 +212,7 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="Frames"
+			Name="Background"
 			>
 			<File
 				RelativePath=".\src\frame_bg.cpp"
@@ -220,6 +220,14 @@
 			</File>
 			<File
 				RelativePath=".\src\frame_bg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\sprite_bg_decor.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\sprite_bg_decor.h"
 				>
 			</File>
 		</Filter>

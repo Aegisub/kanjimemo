@@ -28,6 +28,14 @@ namespace Halley {
 
 	// Forward references
 	class Frame;
+	class Sprite;
+
+
+	// Smart pointers
+	typedef shared_ptr<Frame> spFrame;
+	typedef weak_ptr<Frame> wpFrame;
+	typedef shared_ptr<Sprite> spSprite;
+	typedef weak_ptr<Sprite> wpSprite;
 
 
 	// FrameParent interface, used by both frames themselves and by the game core

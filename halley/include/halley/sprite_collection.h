@@ -16,24 +16,16 @@
 
 \*********************************************************/
 
+#pragma once
+
 #include "sprite.h"
-#include "SDL_opengl.h"
-using namespace Halley;
+#include "interfaces.h"
+#include <list>
 
-
-////////////////////
-// Draw this sprite
-void Sprite::Draw()
-{
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-
-	glTranslatef(pos.x,pos.y,0);
-	glRotatef(rotation.GetDegrees(),0,0,1);
-	glTranslatef(-pivot.x,-pivot.y,0);
-	glScalef(scale.x,scale.y,1);
-	
-	DoDraw();
-
-	glPopMatrix();
+namespace Halley {
+	class SpriteCollection : public std::list<spSprite> {
+	public:
+		void Update(float time);
+		void Draw();
+	};
 }

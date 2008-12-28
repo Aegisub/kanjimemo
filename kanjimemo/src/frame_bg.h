@@ -2,8 +2,12 @@
 
 class FrameBackground : public Halley::Frame {
 private:
-	virtual void DoUpdate(float time);
-	virtual void DoRender();
+	Halley::SpriteCollection sprites;
+
+	void DoUpdate(float time);
+	void DoRender();
+	void Init();
+	void DeInit();
 
 public:
 	FrameBackground();

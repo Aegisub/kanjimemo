@@ -27,6 +27,9 @@
 #include "game.h"
 #include "frame_debug.h"
 #include "polygon.h"
+#include "sprite_collection.h"
+#include "random.h"
+#include "rect.h"
 
 // Macro to implement program
 #define HalleyGame(T) int main(int argc, char* argv[]) { (void) argc; (void) argv; Halley::Game::SetInstance(Halley::spGame(new T)); Halley::Game::GetInstance()->Start(); return 0; }
