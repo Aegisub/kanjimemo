@@ -16,7 +16,7 @@
 
 \*********************************************************/
 
-#include "gl_primitive.h"
+#include "draw_primitive.h"
 #include "SDL_opengl.h"
 #include <cmath>
 using namespace Halley;
@@ -27,15 +27,15 @@ using namespace Halley;
 #endif
 
 
-void GLPrimitive::DrawSquare(float side)
+void PrimitiveDrawer::DrawSquare(float side) const
 {
-	DrawRectangle(side, side);
+	DrawRectangle(Vector2f(side, side));
 }
 
-void GLPrimitive::DrawRectangle(float width, float height)
+void PrimitiveDrawer::DrawRectangle(Vector2f size) const
 {
-	float w = width * 0.5f;
-	float h = height * 0.5f;
+	float w = size.x * 0.5f;
+	float h = size.y * 0.5f;
 	glBegin(GL_QUADS);
 	glVertex2f(-w,-h);
 	glVertex2f(-w,h);
@@ -44,7 +44,7 @@ void GLPrimitive::DrawRectangle(float width, float height)
 	glEnd();
 }
 
-void GLPrimitive::DrawStar(int tips, float rad1, float rad2)
+void PrimitiveDrawer::DrawStar(int tips, float rad1, float rad2) const
 {
 	int n = tips*2;
 	glBegin(GL_TRIANGLE_FAN);

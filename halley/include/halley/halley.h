@@ -30,8 +30,8 @@
 #include "sprite_collection.h"
 #include "random.h"
 #include "rect.h"
-#include "gl_primitive.h"
-#include "gl_text.h"
+#include "draw_primitive.h"
+#include "draw_text.h"
 
 // Macro to implement program
 #define HalleyGame(T) int main(int argc, char* argv[]) { (void) argc; (void) argv; Halley::Game::SetInstance(Halley::spGame(new T)); Halley::Game::GetInstance()->Start(); return 0; }

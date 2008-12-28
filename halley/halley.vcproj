@@ -249,19 +249,19 @@
 			Name="Drawing"
 			>
 			<File
-				RelativePath=".\src\gl_primitive.cpp"
+				RelativePath=".\src\draw_primitive.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\include\halley\gl_primitive.h"
+				RelativePath=".\include\halley\draw_primitive.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\gl_text.cpp"
+				RelativePath=".\src\draw_text.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\include\halley\gl_text.h"
+				RelativePath=".\include\halley\draw_text.h"
 				>
 			</File>
 		</Filter>

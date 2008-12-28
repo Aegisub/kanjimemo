@@ -16,5 +16,5 @@
 
 \*********************************************************/
 
-#include "gl_text.h"
+#include "draw_text.h"
 using namespace Halley;
