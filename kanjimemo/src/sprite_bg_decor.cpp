@@ -16,40 +16,16 @@ SpriteBgDecor::SpriteBgDecor(Vector2f pos, Rect4f _area)
 	SetAccel();
 }
 
-void drawSquare(float side)
-{
-	float s = side * 0.5f;
-	glBegin(GL_QUADS);
-	glVertex2f(-s,-s);
-	glVertex2f(-s,s);
-	glVertex2f(s,s);
-	glVertex2f(s,-s);
-	glEnd();
-}
-
-void drawStar(int tips, float rad1, float rad2)
-{
-	int n = tips*2;
-	glBegin(GL_TRIANGLE_FAN);
-	glVertex2f(0,0);
-	for (int i=0; i <= n; i++) {
-		float r = (i%2 == 0)? rad1 : rad2;
-		float ang = (float)i / (float)n * 2.0f * (float)M_PI;
-		glVertex2f(cos(ang)*r,sin(ang)*r);
-	}
-	glEnd();
-}
-
 void SpriteBgDecor::DoDraw()
 {
 	//glEnable(GL_BLEND);
 	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glColor4f(1.00f, 0.76f, 0.54f, 1.0f);
 
-	drawStar(5, 1.0f, 0.55f);	// 5-star
-	//drawStar(4, 1, 0.707f);	// Square
-	//drawStar(10, 1, 1);		// Circle
-	//drawStar(3, 1.0f, 0.3f);	// 3-star
+	GLPrimitive::DrawStar(5, 1.0f, 0.55f);	// 5-star
+	//GLPrimitive::DrawStar(4, 1, 0.707f);	// Square
+	//GLPrimitive::DrawStar(10, 1, 1);		// Circle
+	//GLPrimitive::DrawStar(3, 1.0f, 0.3f);	// 3-star
 }
 
 

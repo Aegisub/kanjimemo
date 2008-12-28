@@ -11,27 +11,42 @@
 
   ------------------------------------------------------
 
-  Copyright (c) 2007 - Rodrigo Braz Monteiro.
+  Copyright (c) 2008 - Rodrigo Braz Monteiro.
   This file is subject to the terms of license.txt.
 
 \*********************************************************/
 
-#pragma once
-
-// Include all public Halley headers
-#include "SDL.h"
-#include "SDL_opengl.h"
-#include "interfaces.h"
-#include "vector2d.h"
-#include "video.h"
-#include "game.h"
-#include "frame_debug.h"
-#include "polygon.h"
-#include "sprite_collection.h"
-#include "random.h"
-#include "rect.h"
 #include "gl_primitive.h"
-#include "gl_text.h"
+#include "SDL_opengl.h"
+#include <cmath>
+using namespace Halley;
 
-// Macro to implement program
-#define HalleyGame(T) int main(int argc, char* argv[]) { (void) argc; (void) argv; Halley::Game::SetInstance(Halley::spGame(new T)); Halley::Game::GetInstance()->Start(); return 0; }
+
+#ifndef M_PI
+#define M_PI 3.1415926535897932384626433832795f
+#endif
+
+
+void GLPrimitive::DrawSquare(float side)
+{
+	float s = side * 0.5f;
+	glBegin(GL_QUADS);
+	glVertex2f(-s,-s);
+	glVertex2f(-s,s);
+	glVertex2f(s,s);
+	glVertex2f(s,-s);
+	glEnd();
+}
+
+void GLPrimitive::DrawStar(int tips, float rad1, float rad2)
+{
+	int n = tips*2;
+	glBegin(GL_TRIANGLE_FAN);
+	glVertex2f(0,0);
+	for (int i=0; i <= n; i++) {
+		float r = (i%2 == 0)? rad1 : rad2;
+		float ang = (float)i / (float)n * 2.0f * (float)M_PI;
+		glVertex2f(cos(ang)*r,sin(ang)*r);
+	}
+	glEnd();
+}

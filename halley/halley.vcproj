@@ -245,6 +245,26 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="Drawing"
+			>
+			<File
+				RelativePath=".\src\gl_primitive.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\include\halley\gl_primitive.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\gl_text.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\include\halley\gl_text.h"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>
