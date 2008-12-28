@@ -11,7 +11,7 @@
 
   ------------------------------------------------------
 
-  Copyright (c) 2007 - Rodrigo Braz Monteiro.
+  Copyright (c) 2008 - Rodrigo Braz Monteiro.
   This file is subject to the terms of license.txt.
 
 \*********************************************************/
