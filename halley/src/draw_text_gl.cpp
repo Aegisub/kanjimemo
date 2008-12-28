@@ -398,10 +398,11 @@ unsigned char* OpenGLTextTexture::ExtendBorder(const unsigned char* __restrict s
 			if (dist <= border)
 				conv[convPos] = 1;
 			else {
-				if (dist >= border+1)
+				/*if (dist >= border+1)
 					conv[convPos] = 0;
 				else
-					conv[convPos] = dist-border;
+					conv[convPos] = dist-border;*/
+				conv[convPos] = 0;
 			}
 		}
 	}
@@ -419,8 +420,9 @@ unsigned char* OpenGLTextTexture::ExtendBorder(const unsigned char* __restrict s
 					int convPos = convOff + a;
 
 					unsigned char* dst = result + ((y+b-offset)*w + x-offset+a);
-					float thisVal = conv[convPos] * value;
-					if (*dst < thisVal) *dst = thisVal;
+					unsigned char thisVal = unsigned char(conv[convPos] * value);
+					//if (*dst < thisVal) *dst = thisVal;
+					*dst = std::min(255,*dst+thisVal);
 				}
 			}
 		}
