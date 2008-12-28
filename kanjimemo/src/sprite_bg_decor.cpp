@@ -46,7 +46,10 @@ void SpriteBgDecor::DoDraw()
 	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glColor4f(1.00f, 0.76f, 0.54f, 1.0f);
 
-	drawStar(5, 1.0f, 0.55f);
+	drawStar(5, 1.0f, 0.55f);	// 5-star
+	//drawStar(4, 1, 0.707f);	// Square
+	//drawStar(10, 1, 1);		// Circle
+	//drawStar(3, 1.0f, 0.3f);	// 3-star
 }
 
 

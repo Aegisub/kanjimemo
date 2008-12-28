@@ -15,7 +15,7 @@ void FrameBackground::Init()
 
 	Vector2f p1 = Video::GetOrigin();
 	Vector2f p2 = Video::GetDisplaySize()+p1;
-	Vector2f border(50,50);
+	Vector2f border(100,100);
 	p1 -= border;
 	p2 += border;
 	Rect4f area(p1, p2);

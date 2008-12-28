@@ -66,16 +66,8 @@ namespace Halley {
 
 		Vector2D<T> WrapInside(Vector2D<T> p) const
 		{
-			Vector2D<T> res = p;
-			T w = GetWidth();
-			T h = GetHeight();
-
-			if (res.x > p2.x) res.x = Mod<T>(res.x-p2.x, w) + p1.x;
-			if (res.y > p2.y) res.y = Mod<T>(res.y-p2.y, h) + p1.y;
-			if (res.x < p1.x) res.x = p2.x - Mod<T>(p1.x-res.x, w);
-			if (res.y < p1.y) res.y = p2.y - Mod<T>(p1.y-res.y, h);
-
-			return res;
+			Vector2D<T> size = GetSize();
+			return ((((p-p1) % size) + size) % size) + p1;
 		}
 	};
 

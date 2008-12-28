@@ -27,6 +27,16 @@ namespace Halley {
 	// Vector2D class declaration
 	template <typename T=float,class U=Angle<float> >
 	class Vector2D {
+	private:
+		template <typename T>
+		T Mod(T a, T b) const { return a % b; }
+
+		template <>
+		float Mod(float a, float b) const { return fmod(a,b); }
+
+		template <>
+		double Mod(double a, double b) const { return fmod(a,b); }
+
 	public:
 		T x,y;
 
@@ -50,6 +60,7 @@ namespace Halley {
 		inline Vector2D operator - (const Vector2D &param) const { return Vector2D(x - param.x,y - param.y); }
 		inline Vector2D operator * (const T param) const { return Vector2D(x * param,y * param); }
 		inline Vector2D operator / (const T param) const { return Vector2D(x / param,y / param); }
+		inline Vector2D operator % (const Vector2D &param) const { return Vector2D(Mod<T>(x, param.x), Mod<T>(y, param.y)); }
 
 		// In-place operations
 		inline Vector2D operator += (const Vector2D &param) { x += param.x; y += param.y; return *this; }
