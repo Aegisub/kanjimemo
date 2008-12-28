@@ -31,18 +31,16 @@ namespace Halley {
 	/////////////////////
 	// Glyph information
 	class OpenGLTextGlyph {
-	private:
-		static wxBitmap *tempBmp;
-
 	public:
 		int value;
 		int tex;
 		float x1,y1,x2,y2;
 		int w,h;
+		int border;
 		shared_ptr<wxFont> font;
 
 		void GetMetrics();
-		void Draw(int x,int y);
+		void Draw(float x, float y, float scale);
 	};
 
 	typedef std::map<int,OpenGLTextGlyph> glyphMap;
@@ -90,12 +88,12 @@ namespace Halley {
 		OpenGLTextGlyph CreateGlyph(int i);
 		void Reset();
 
-		void DrawString(std::string text,Vector2f pos);
+		void DrawString(std::string text,Vector2f pos, float scale);
 
 	protected:
 		virtual void DoSetFont(std::string face,int size,bool bold,bool italics);
 		virtual void DoSetColour(Colour col);
-		virtual void DoPrint(std::string text, Vector2f pos);
+		virtual void DoPrint(std::string text, Vector2f pos, float scale);
 		virtual void DoGetExtent(std::string text, Vector2f &pos);
 
 	public:

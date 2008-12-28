@@ -52,9 +52,11 @@ void Video::SetVideo(bool _fullscreen, Vector2i windowSize, Vector2f virtualSize
 	// Calculate virtualSize
 	Vector2f p1; // Bottom-left
 	Vector2f p2; // Top-right
+	float scale;
 	if (virtualSize.x == 0 || virtualSize.y == 0) {
 		virtualSize = Vector2f(windowSize);
 		p2 = virtualSize;
+		scale = 1;
 	} else {
 		float wAR = (float) windowSize.x / (float) windowSize.y;
 		float vAR = virtualSize.x / virtualSize.y;
@@ -64,12 +66,14 @@ void Video::SetVideo(bool _fullscreen, Vector2i windowSize, Vector2f virtualSize
 			float border = (virtualSize.y * wAR - virtualSize.x) * 0.5f;
 			p1.x -= border;
 			p2.x += border;
+			scale = windowSize.y / virtualSize.y;
 		} else {
 			// Letterbox on top/bottom
 			//float border = windowSize.y - windowSize.x / vAR;
 			float border = (virtualSize.x / wAR - virtualSize.y) * 0.5f;
 			p1.y -= border;
 			p2.y += border;
+			scale = windowSize.x / virtualSize.x;
 		}
 	}
 	p1 += Vector2f(0.5f, 0.5f);
@@ -82,6 +86,7 @@ void Video::SetVideo(bool _fullscreen, Vector2i windowSize, Vector2f virtualSize
 	vid->fullscreen = _fullscreen;
 	vid->p1 = p1;
 	vid->p2 = p2;
+	vid->scale = scale;
 
 	// Initialize GL projection
 	glClearColor(0,0,0,0);

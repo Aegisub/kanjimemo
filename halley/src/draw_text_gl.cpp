@@ -89,7 +89,7 @@ void OpenGLText::DoSetColour(Colour _col) {
 
 /////////
 // Print
-void OpenGLText::DoPrint(std::string text,Vector2f pos) {
+void OpenGLText::DoPrint(std::string text, Vector2f pos, float scale) {
 	// Set OpenGL
 	glEnable(GL_BLEND);
 	glEnable(GL_TEXTURE_2D);
@@ -108,7 +108,7 @@ void OpenGLText::DoPrint(std::string text,Vector2f pos) {
 
 	// Draw primary string
 	glColor4f(col.r,col.g,col.b,col.a);
-	DrawString(text,pos);
+	DrawString(text,pos,scale);
 
 	// Disable blend
 	glDisable(GL_BLEND);
@@ -117,14 +117,14 @@ void OpenGLText::DoPrint(std::string text,Vector2f pos) {
 
 /////////////////
 // Draw a string
-void OpenGLText::DrawString(std::string text,Vector2f pos) {
+void OpenGLText::DrawString(std::string text,Vector2f pos, float scale) {
 	// Variables
 	float x = pos.x;
 	float y = pos.y;
 	size_t len = text.length();
 	OpenGLTextGlyph glyph;
 	lineHeight = 0;
-	int dx=x,dy=y;
+	float dx=x,dy=y;
 
 	// Draw string
 	for (size_t i=0;i<len;i++) {
@@ -134,15 +134,17 @@ void OpenGLText::DrawString(std::string text,Vector2f pos) {
 		// Handle carriage returns
 		if (curChar == '\n') {
 			dx = x;
-			dy -= lineHeight;
+			dy -= lineHeight * scale;
 		}
 
 		// Handle normal glyphs
 		else {
 			glyph = GetGlyph(curChar);
-			glyph.Draw(dx,dy);
-			dx += glyph.w;
-			if (glyph.h > lineHeight) lineHeight = glyph.h;
+			glyph.Draw(dx,dy,scale);
+			float gw = glyph.w - 2*glyph.border;
+			float gh = glyph.h - 2*glyph.border;
+			dx += gw * scale;
+			if (gh > lineHeight) lineHeight = gh;
 		}
 	}
 }
@@ -219,7 +221,7 @@ OpenGLTextGlyph OpenGLText::CreateGlyph(int n) {
 
 	// No texture could fit it, create a new one
 	if (!ok) {
-		textures.push_back(shared_ptr<OpenGLTextTexture>(new OpenGLTextTexture(256,256)));
+		textures.push_back(shared_ptr<OpenGLTextTexture>(new OpenGLTextTexture(512,512)));
 		textures.back()->TryToInsert(glyph, font);
 	}
 
@@ -245,6 +247,8 @@ OpenGLTextTexture::OpenGLTextTexture(int w,int h) {
 	// Texture parameters
 	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+	//glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+	//glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP);
 	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP);
 
@@ -301,12 +305,13 @@ void OpenGLTextTexture::Insert(OpenGLTextGlyph &glyph, shared_ptr<wxFont> font) 
 	wxString str = wxChar(glyph.value);
 	int w = glyph.w;
 	int h = glyph.h;
+	int border = glyph.border;
 
 	// Fill glyph structure
-	glyph.x1 = float(x)/width;
-	glyph.y1 = float(y)/height;
-	glyph.x2 = float(x+w)/width;
-	glyph.y2 = float(y+h)/height;
+	glyph.x1 = float(x+border)/width;
+	glyph.y1 = float(y+border)/height;
+	glyph.x2 = float(x+w-border)/width;
+	glyph.y2 = float(y+h-border)/height;
 	glyph.tex = tex;
 	glyph.font = font;
 
@@ -319,10 +324,8 @@ void OpenGLTextTexture::Insert(OpenGLTextGlyph &glyph, shared_ptr<wxFont> font) 
 	dc.Clear();
 	dc.SetFont(*font);
 	dc.SetTextForeground(wxColour(255,255,255));
-	dc.DrawText(str,0,0);
-	//bmp.SaveFile(wxString::Format(_T("glyph%i.bmp"),glyph.value),wxBITMAP_TYPE_BMP);
+	dc.DrawText(str,border,border);
 	wxImage img = bmp.ConvertToImage();
-	//img.SaveFile(str + _T(".bmp"));
 
 	// Convert to alpha
 	int imgw = img.GetWidth();
@@ -348,28 +351,31 @@ void OpenGLTextTexture::Insert(OpenGLTextGlyph &glyph, shared_ptr<wxFont> font) 
 
 ////////////////
 // Draw a glyph
-void OpenGLTextGlyph::Draw(int x,int y) {
+void OpenGLTextGlyph::Draw(float x,float y,float scale) {
 	// Store matrix and translate
 	glPushMatrix();
-	glTranslatef((float)x,(float)y,0.0f);
+	glTranslatef(x,y,0.0f);
 
 	// Set texture
 	glBindTexture(GL_TEXTURE_2D, tex);
+
+	float dw = (w-2*border)*scale;
+	float dh = (h-2*border)*scale;
 
 	// Draw quad
 	glBegin(GL_QUADS);
 	// Top-left
 	glTexCoord2f(x1,y1);
-	glVertex2f(0,h);
+	glVertex2f(0,dh);
 	// Bottom-left
 	glTexCoord2f(x1,y2);
 	glVertex2f(0,0);
 	// Bottom-right
 	glTexCoord2f(x2,y2);
-	glVertex2f(w,0);
+	glVertex2f(dw,0);
 	// Top-right
 	glTexCoord2f(x2,y1);
-	glVertex2f(w,h);
+	glVertex2f(dw,dh);
 	glEnd();
 
 	// Restore matrix
@@ -379,8 +385,9 @@ void OpenGLTextGlyph::Draw(int x,int y) {
 
 /////////////////////
 // Get glyph metrics
-wxBitmap *OpenGLTextGlyph::tempBmp = NULL;
 void OpenGLTextGlyph::GetMetrics() {
+	static wxBitmap *tempBmp = NULL;
+
 	// Glyph data
 	wxCoord desc,lead;
 	wxString str = wxChar(value);
@@ -393,5 +400,9 @@ void OpenGLTextGlyph::GetMetrics() {
 		wxMemoryDC dc(*tempBmp);
 		dc.SetFont(*font);
 		dc.GetTextExtent(str,&w,&h,&desc,&lead);
+
+		border = 10;
+		w += 2*border;
+		h += 2*border;
 	}
 }

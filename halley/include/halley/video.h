@@ -26,11 +26,13 @@ namespace Halley {
 
 	class Video {
 	private:
+		static spVideo instance;
+
 		Vector2i windowSize;
 		Vector2f virtualSize;
 		Vector2f p1, p2;
 		bool fullscreen;
-		static spVideo instance;
+		float scale;
 
 		static spVideo Get();
 		Video();
@@ -41,6 +43,7 @@ namespace Halley {
 		static Vector2f GetVirtualSize() { return Get()->virtualSize; }
 		static Vector2f GetDisplaySize() { return Get()->p2 - Get()->p1; }
 		static Vector2f GetOrigin() { return Get()->p1; }
+		static float GetScale() { return Get()->scale; }
 		static bool IsFullscreen() { return Get()->fullscreen; }
 	};
 }

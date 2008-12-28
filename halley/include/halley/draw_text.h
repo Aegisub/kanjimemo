@@ -19,6 +19,7 @@
 #pragma once
 
 #include <string>
+#include <map>
 #include "colour.h"
 #include "interfaces.h"
 #include "vector2d.h"
@@ -27,20 +28,23 @@ namespace Halley {
 	// OpenGL Text Drawing class
 	class TextDrawer {
 	private:
+		static Colour col;
+		static std::string curId;
+		static std::map<std::string, shared_ptr<TextDrawer> > instances;
 		static shared_ptr<TextDrawer> GetInstance();
 
 	protected:
 		virtual void DoSetFont(std::string face,int size,bool bold,bool italics) = 0;
 		virtual void DoSetColour(Colour col) = 0;
-		virtual void DoPrint(std::string text, Vector2f pos) = 0;
+		virtual void DoPrint(std::string text, Vector2f pos, float scale) = 0;
 		virtual void DoGetExtent(std::string text, Vector2f &pos) = 0;
 
 	public:
 		virtual ~TextDrawer() {}
 
-		static void SetFont(std::string face="Verdana",int size=10,bool bold=true,bool italics=false) { GetInstance()->DoSetFont(face,size,bold,italics); }
-		static void SetColour(Colour col) { GetInstance()->DoSetColour(col); }
-		static void Print(std::string text, Vector2f pos) { GetInstance()->DoPrint(text,pos); }
-		static void GetExtent(std::string text, Vector2f &pos) { GetInstance()->DoGetExtent(text,pos); }
+		static void SetFont(std::string face="Verdana",int size=10,bool bold=true,bool italics=false);
+		static void SetColour(Colour col);
+		static void Print(std::string text, Vector2f pos);
+		static void GetExtent(std::string text, Vector2f &pos);
 	};
 }

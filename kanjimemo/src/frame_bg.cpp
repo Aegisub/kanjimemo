@@ -62,9 +62,14 @@ void FrameBackground::DoRender()
 
 	sprites.Draw();
 
-	using Halley::TextDrawer;
-	TextDrawer::SetFont("Verdana", 25, true, false);
-	TextDrawer::SetColour(Halley::Colour(1,1,1));
-	TextDrawer::Print("Hello, world!\nWhat's up?", Halley::Vector2f(20, 40));
+	if (true) {
+		using Halley::TextDrawer;
+		TextDrawer::SetFont("Verdana", 25, true, false);
+		TextDrawer::SetColour(Halley::Colour(1,1,1));
+		TextDrawer::Print("the quick brown fox jumped over the lazy dog!\n\nTHE QUICK BROWN FOX JUMPED OVER THE LAZY DOG!", Halley::Vector2f(20, 100));
+
+		TextDrawer::SetFont("Harrington", 30, true, false);
+		TextDrawer::Print("Blah blah blah testing multiple fonts.", Halley::Vector2f(20, 200));
+	}
 }
 
