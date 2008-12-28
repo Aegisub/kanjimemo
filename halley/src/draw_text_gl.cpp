@@ -243,8 +243,8 @@ OpenGLTextTexture::OpenGLTextTexture(int w,int h) {
 	glBindTexture(GL_TEXTURE_2D, tex);
 
 	// Texture parameters
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP);
 	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP);
 
@@ -288,6 +288,7 @@ bool OpenGLTextTexture::TryToInsert(OpenGLTextGlyph &glyph, shared_ptr<wxFont> f
 		y = nextY;
 		nextY = y+h;
 		Insert(glyph, font);
+		x += w;
 		return true;
 	}
 }
@@ -341,7 +342,7 @@ void OpenGLTextTexture::Insert(OpenGLTextGlyph &glyph, shared_ptr<wxFont> font) 
 	glBindTexture(GL_TEXTURE_2D, tex);
 	glTexSubImage2D(GL_TEXTURE_2D,0,x,y,imgw,imgh,GL_LUMINANCE_ALPHA,GL_UNSIGNED_BYTE,alpha);
 	delete[] alpha;
-	if (glGetError()) throw _T("Internal OpenGL text renderer error: Error uploading glyph data to video memory.");
+	if (glGetError()) throw std::exception("Internal OpenGL text renderer error: Error uploading glyph data to video memory.");
 }
 
 
@@ -354,8 +355,6 @@ void OpenGLTextGlyph::Draw(int x,int y) {
 
 	// Set texture
 	glBindTexture(GL_TEXTURE_2D, tex);
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
 
 	// Draw quad
 	glBegin(GL_QUADS);
