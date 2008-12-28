@@ -28,6 +28,7 @@ HalleyGame(KanjiMemo);
 
 //////////////////
 // Load libraries
+#ifdef _MSC_VER
 #ifdef _DEBUG
 	#pragma comment(lib,"SDL_d.lib")
 	#pragma comment(lib,"SDLmain_d.lib")
@@ -36,3 +37,9 @@ HalleyGame(KanjiMemo);
 	#pragma comment(lib,"SDLmain.lib")
 #endif
 #pragma comment(lib,"OpenGL32.lib")
+#pragma comment(lib,"comctl32.lib")
+#pragma comment(lib,"rpcrt4.lib")
+#pragma comment(lib,"winmm.lib")
+#pragma comment(lib,"advapi32.lib")
+#pragma comment(lib,"wsock32.lib")
+#endif

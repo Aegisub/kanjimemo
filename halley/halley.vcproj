@@ -249,6 +249,10 @@
 			Name="Drawing"
 			>
 			<File
+				RelativePath=".\include\halley\colour.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\draw_primitive.cpp"
 				>
 			</File>
@@ -262,6 +266,14 @@
 			</File>
 			<File
 				RelativePath=".\include\halley\draw_text.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\draw_text_gl.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\draw_text_gl.h"
 				>
 			</File>
 		</Filter>

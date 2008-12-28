@@ -18,7 +18,8 @@ SpriteBgDecor::SpriteBgDecor(Vector2f pos, Rect4f _area)
 
 void SpriteBgDecor::DoDraw()
 {
-	//glEnable(GL_BLEND);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glDisable(GL_BLEND);
 	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glColor4f(1.00f, 0.76f, 0.54f, 1.0f);
 

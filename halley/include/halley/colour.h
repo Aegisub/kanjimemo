@@ -16,13 +16,14 @@
 
 \*********************************************************/
 
-#include "draw_text.h"
-#include "draw_text_gl.h"
-using namespace Halley;
+#pragma once
 
-shared_ptr<TextDrawer> TextDrawer::GetInstance()
-{
-	static shared_ptr<TextDrawer> instance;
-	if (!instance) instance = shared_ptr<TextDrawer>(new OpenGLText());
-	return instance;
+namespace Halley {
+	class Colour {
+	public:
+		float r,g,b,a;
+
+		Colour() : r(0), g(0), b(0), a(1) {}
+		Colour(float _r, float _g, float _b, float _a=1.0f) : r(_r), g(_g), b(_b), a(_a) {}
+	};
 }
