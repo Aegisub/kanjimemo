@@ -22,6 +22,7 @@ namespace Halley {
 	class GLPrimitive {
 	public:
 		static void DrawStar(int tips, float rad1, float rad2);
+		static void DrawRectangle(float width, float height);
 		static void DrawSquare(float side);
 	};
 }

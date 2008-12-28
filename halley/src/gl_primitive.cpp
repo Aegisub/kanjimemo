@@ -29,12 +29,18 @@ using namespace Halley;
 
 void GLPrimitive::DrawSquare(float side)
 {
-	float s = side * 0.5f;
+	DrawRectangle(side, side);
+}
+
+void GLPrimitive::DrawRectangle(float width, float height)
+{
+	float w = width * 0.5f;
+	float h = height * 0.5f;
 	glBegin(GL_QUADS);
-	glVertex2f(-s,-s);
-	glVertex2f(-s,s);
-	glVertex2f(s,s);
-	glVertex2f(s,-s);
+	glVertex2f(-w,-h);
+	glVertex2f(-w,h);
+	glVertex2f(w,h);
+	glVertex2f(w,-h);
 	glEnd();
 }
 
