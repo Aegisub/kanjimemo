@@ -28,6 +28,8 @@ using namespace Halley;
 std::string TextDrawer::curId;
 std::map<std::string, shared_ptr<TextDrawer> > TextDrawer::instances;
 Colour TextDrawer::col;
+Colour TextDrawer::borderColor;
+float TextDrawer::borderWidth;
 
 
 shared_ptr<TextDrawer> TextDrawer::GetInstance()
@@ -60,10 +62,18 @@ void TextDrawer::SetColour(Colour _col)
 }
 
 
+void TextDrawer::SetBorder(Colour _col, float width)
+{
+	borderColor = _col;
+	borderWidth = width;
+}
+
+
 void TextDrawer::Print(std::string text, Vector2f pos)
 {
 	shared_ptr<TextDrawer> instance = GetInstance();
 	instance->DoSetColour(col);
+	instance->DoSetBorder(borderColor, borderWidth);
 	instance->DoPrint(text,pos,1/Video::GetScale());
 }
 
