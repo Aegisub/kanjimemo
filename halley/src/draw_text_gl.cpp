@@ -395,14 +395,14 @@ unsigned char* OpenGLTextTexture::ExtendBorder(const unsigned char* __restrict s
 			int db = (b-offset);
 			float dist = (float)sqrt(float(da*da + db*db));
 
-			if (dist <= border)
+			if (dist <= border-0.5f)
 				conv[convPos] = 1;
 			else {
-				/*if (dist >= border+1)
+				if (dist >= border+0.5f)
 					conv[convPos] = 0;
 				else
-					conv[convPos] = dist-border;*/
-				conv[convPos] = 0;
+					conv[convPos] = dist-border-0.5f;
+				//conv[convPos] = 0;
 			}
 		}
 	}
@@ -478,7 +478,10 @@ void OpenGLTextGlyph::Draw(float x,float y,float scale) {
 
 	// Store matrix and translate
 	glPushMatrix();
-	glTranslatef(x-o,y-o,0.0f);
+	glTranslatef(x,y,0.0f);
+	if (o > 0) {
+		glTranslatef(-o-0.5f, -o-0.5f, 0.0f);
+	}
 
 	// Set texture
 	glBindTexture(GL_TEXTURE_2D, tex);

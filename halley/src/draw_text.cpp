@@ -65,7 +65,7 @@ void TextDrawer::SetColour(Colour _col)
 void TextDrawer::SetBorder(Colour _col, float width)
 {
 	borderColor = _col;
-	borderWidth = width;
+	borderWidth = width*Video::GetScale();
 }
 
 

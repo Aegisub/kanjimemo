@@ -170,7 +170,8 @@ void Game::SetInstance(spGame game)
 void Game::PollEvents()
 {
 	SDL_Event event;
-	while (SDL_PollEvent(&event)) {
+	SDL_PumpEvents();
+	while (SDL_PeepEvents(&event, 1, SDL_GETEVENT, SDL_ALLEVENTS) > 0) {
 		switch (event.type) {
 			case SDL_KEYDOWN:
 				{
