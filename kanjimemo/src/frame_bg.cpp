@@ -46,6 +46,20 @@ void FrameBackground::DoRender()
 	glClearColor(0.99f, 0.71f, 0.45f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
+	if (false) {
+		float w = Halley::Video::GetVirtualSize().x;
+		float h = Halley::Video::GetVirtualSize().y;
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glColor4f(0,0,0,0.1f);
+		glBegin(GL_QUADS);
+			glVertex2f(0,0);
+			glVertex2f(0,h);
+			glVertex2f(w,h);
+			glVertex2f(w,0);
+		glEnd();
+	}
+
 	sprites.Draw();
 }
 

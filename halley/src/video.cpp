@@ -61,12 +61,13 @@ void Video::SetVideo(bool _fullscreen, Vector2i windowSize, Vector2f virtualSize
 		p2 = virtualSize;
 		if (wAR > vAR) {
 			// Letterbox on left/right
-			float border = (wAR * virtualSize.y - virtualSize.x) * 0.5f;
+			float border = (virtualSize.y * wAR - virtualSize.x) * 0.5f;
 			p1.x -= border;
 			p2.x += border;
 		} else {
 			// Letterbox on top/bottom
-			float border = (windowSize.y - windowSize.x / vAR) * 0.5f;
+			//float border = windowSize.y - windowSize.x / vAR;
+			float border = (virtualSize.x / wAR - virtualSize.y) * 0.5f;
 			p1.y -= border;
 			p2.y += border;
 		}
