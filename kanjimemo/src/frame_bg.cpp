@@ -66,7 +66,7 @@ void FrameBackground::DoRender()
 		using Halley::TextDrawer;
 		TextDrawer::SetFont("Verdana", 25, true, false);
 		TextDrawer::SetColour(Halley::Colour(1,1,1));
-		TextDrawer::SetBorder(Halley::Colour(0,0,0),5);
+		TextDrawer::SetBorder(Halley::Colour(0.6f,0.5f,0.3f,1),5);
 		TextDrawer::Print("the quick brown fox jumps over the lazy dog!\n\nTHE QUICK BROWN FOX JUMPS OVER THE LAZY DOG!        O", Halley::Vector2f(20, 400));
 
 		TextDrawer::SetFont("Harrington", 30, true, false);

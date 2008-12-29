@@ -377,7 +377,7 @@ void OpenGLTextTexture::Insert(OpenGLTextGlyph &glyph, shared_ptr<wxFont> font, 
 unsigned char* OpenGLTextTexture::ExtendBorder(const unsigned char* __restrict src, size_t w, size_t h, float border)
 {
 	size_t len = w*h*2;
-	int offset = int(ceil(border));
+	int offset = int(ceil(border))+1;
 	int convStride = offset*2 + 1;
 
 	unsigned char * __restrict result = new unsigned char[len];
@@ -391,17 +391,18 @@ unsigned char* OpenGLTextTexture::ExtendBorder(const unsigned char* __restrict s
 			int convPos = convOff + a;
 
 			// Get distance from cell to center
-			int da = (a-offset);
-			int db = (b-offset);
-			float dist = (float)sqrt(float(da*da + db*db));
+			float da = (a-offset);
+			float db = (b-offset);
+			float dist = sqrt(float(da*da + db*db));
 
-			if (dist <= border-0.5f)
-				conv[convPos] = 1;
+			const float limit = 1.0f;
+			if (dist <= border)
+				conv[convPos] = 255;
 			else {
-				if (dist >= border+0.5f)
+				if (dist >= border+limit)
 					conv[convPos] = 0;
 				else
-					conv[convPos] = dist-border-0.5f;
+					conv[convPos] = 255 - (unsigned char)(255*(dist-border)/limit);
 				//conv[convPos] = 0;
 			}
 		}
@@ -411,7 +412,8 @@ unsigned char* OpenGLTextTexture::ExtendBorder(const unsigned char* __restrict s
 	for (size_t y=offset; y<h-offset; y++) {
 		for (size_t x=offset; x<w-offset; x++) {
 			// Get the current pixel
-			float value = src[y*w+x];
+			int value = src[y*w+x];
+			if (value == 0) continue;
 
 			// Multiply it by the convolution matrix and set values
 			for (int b=0; b<convStride; b++) {
@@ -420,9 +422,9 @@ unsigned char* OpenGLTextTexture::ExtendBorder(const unsigned char* __restrict s
 					int convPos = convOff + a;
 
 					unsigned char* dst = result + ((y+b-offset)*w + x-offset+a);
-					unsigned char thisVal = unsigned char(conv[convPos] * value);
-					//if (*dst < thisVal) *dst = thisVal;
-					*dst = std::min(255,*dst+thisVal);
+					unsigned char thisVal = (unsigned char)(conv[convPos] * value / 255);
+					if (*dst < thisVal) *dst = thisVal;
+					//*dst = std::min(255,*dst+thisVal);
 				}
 			}
 		}
@@ -478,10 +480,7 @@ void OpenGLTextGlyph::Draw(float x,float y,float scale) {
 
 	// Store matrix and translate
 	glPushMatrix();
-	glTranslatef(x,y,0.0f);
-	if (o > 0) {
-		glTranslatef(-o-0.5f, -o-0.5f, 0.0f);
-	}
+	glTranslatef(x-o,y-o,0.0f);
 
 	// Set texture
 	glBindTexture(GL_TEXTURE_2D, tex);
