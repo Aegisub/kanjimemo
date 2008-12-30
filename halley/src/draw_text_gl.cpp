@@ -332,12 +332,13 @@ void OpenGLTextTexture::Insert(OpenGLTextGlyph &glyph, shared_ptr<wxFont> font, 
 	int h = glyph.h;
 	int border = glyph.emptyBorder;
 	int border2 = glyph.border;
+	float extraOutline = ceil(glyph.outline) - glyph.outline;
 
 	// Fill glyph structure
 	glyph.x1 = float(x+border)/width;
 	glyph.y1 = float(y+border)/height;
-	glyph.x2 = float(x+w-border)/width;
-	glyph.y2 = float(y+h-border)/height;
+	glyph.x2 = float(x+w-border-extraOutline)/width;
+	glyph.y2 = float(y+h-border-extraOutline)/height;
 	glyph.tex = tex;
 	glyph.font = font;
 	glyph.outline = outline;
@@ -508,7 +509,7 @@ unsigned char* OpenGLTextTexture::GetLuminanceAlpha(const unsigned char* src, si
 void OpenGLTextGlyph::Draw(float x,float y,float scale) {
 	float dw = (w-2*emptyBorder)*scale;
 	float dh = (h-2*emptyBorder)*scale;
-	float o = outline*scale;
+	float o = (ceil(outline))*scale;
 
 	// Store matrix and translate
 	glPushMatrix();
@@ -557,7 +558,7 @@ void OpenGLTextGlyph::GetMetrics() {
 		dc.GetTextExtent(str,&w,&h,&desc,&lead);
 
 		emptyBorder = 2;
-		border = emptyBorder+ceil(outline);
+		border = emptyBorder+int(ceil(outline));
 		w += 2*border;
 		h += 2*border;
 	}
