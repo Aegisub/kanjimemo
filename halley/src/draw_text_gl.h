@@ -62,6 +62,7 @@ namespace Halley {
 		unsigned char* ExtendBorder(const unsigned char* img, size_t w, size_t h, float borderWidth);
 		unsigned char* Subtract(const unsigned char* img1, const unsigned char* img2, size_t w, size_t h);
 		unsigned char* GetLuminanceAlpha(const unsigned char* img, size_t len);
+		unsigned char* GetConvolutionMatrix(float border);
 
 	public:
 		GLuint tex;

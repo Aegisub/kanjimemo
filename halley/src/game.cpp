@@ -178,6 +178,7 @@ void Game::PollEvents()
 					int type = event.key.type;
 					int code = event.key.keysym.sym;
 					int mod = event.key.keysym.mod;
+					if (code == SDLK_ESCAPE) Quit();
 					break;
 				}
 			case SDL_QUIT:

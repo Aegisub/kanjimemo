@@ -373,15 +373,10 @@ void OpenGLTextTexture::Insert(OpenGLTextGlyph &glyph, shared_ptr<wxFont> font, 
 	if (glGetError()) throw std::exception("Internal OpenGL text renderer error: Error uploading glyph data to video memory.");
 }
 
-
-unsigned char* OpenGLTextTexture::ExtendBorder(const unsigned char* __restrict src, size_t w, size_t h, float border)
+unsigned char * OpenGLTextTexture::GetConvolutionMatrix(float border)
 {
-	size_t len = w*h*2;
-	int offset = int(ceil(border))+1;
+	int offset = std::max(1,int(ceil(border))+1);
 	int convStride = offset*2 + 1;
-
-	unsigned char * __restrict result = new unsigned char[len];
-	memset(result,0,len);
 	unsigned char * __restrict conv = new unsigned char[convStride * convStride];
 
 	// Generate convolution matrix
@@ -408,28 +403,65 @@ unsigned char* OpenGLTextTexture::ExtendBorder(const unsigned char* __restrict s
 		}
 	}
 
+	return conv;
+}
+
+unsigned char* OpenGLTextTexture::ExtendBorder(const unsigned char* __restrict src, size_t w, size_t h, float border)
+{
+	size_t len = w*h*2;
+	int offset = std::max(1,int(ceil(border))+1);
+	int convStride = offset*2 + 1;
+
+	const unsigned char * __restrict conv = GetConvolutionMatrix(border);
+	unsigned char * __restrict result = new unsigned char[len];
+	memset(result,0,len);
+
 	// Loop through the original image
 	for (size_t y=offset; y<h-offset; y++) {
+		int lastValue = 0;
+		int nextValue = src[y*w];
 		for (size_t x=offset; x<w-offset; x++) {
 			// Get the current pixel
-			int value = src[y*w+x];
+			const int value = nextValue;
+			nextValue = src[y*w+x+1];
 			if (value == 0) continue;
 
-			// Multiply it by the convolution matrix and set values
-			for (int b=0; b<convStride; b++) {
-				int convOff = b*convStride;
-				for (int a=0; a<convStride; a++) {
-					int convPos = convOff + a;
+			// If this isn't more opaque than the last pixel, then it will certainly not be useful for pixels that are to the left of it
+			const int startA = lastValue > value? offset : 0;
 
-					unsigned char* dst = result + ((y+b-offset)*w + x-offset+a);
-					unsigned char thisVal = (unsigned char)(conv[convPos] * value / 255);
-					if (*dst < thisVal) *dst = thisVal;
-					//*dst = std::min(255,*dst+thisVal);
+			// Same as above, but for next pixel
+			const int endA = nextValue > value? convStride-offset : convStride;
+			const int lenA = endA - startA;
+
+			// Same as above, but for pixel above
+			const int valueAbove = src[(y-1)*w+x];	// This is safe because y >= 1
+			//const int valueAbove = 0;
+			const int startB = valueAbove > value? offset : 0;
+
+			// Same as above, but for pixel below
+			const int valueBelow = src[(y+1)*w+x];	// Likewise, y < h-1
+			//const int valueBelow = 0;
+			const int endB = valueBelow > value? convStride - offset : convStride;
+
+			// Multiply it by the convolution matrix and set values
+			const size_t dstOff = (y-offset)*w - offset + startA + x;
+			for (int b=startB; b<endB; b++) {
+				int convOff = b*convStride + startA;
+				size_t dstPos = b*w + dstOff;
+				//for (int a = convStride-startA; --a >= 0; ) {
+				for (int a = lenA; --a >= 0; ) {
+					unsigned char thisVal = (unsigned char)(conv[convOff++] * value >> 8);
+
+					if (result[dstPos] >= thisVal);		// If you're wondering WTF is going on, check Intel's Optimization Reference Manual, 3.4.1.3
+					else result[dstPos] = thisVal;
+					//result[dstPos] = std::max(result[dstPos],thisVal);
+					dstPos++;
 				}
 			}
 		}
 	}
 	
+	delete[] conv;
 	return result;
 }
 
@@ -530,3 +562,4 @@ void OpenGLTextGlyph::GetMetrics() {
 		h += 2*border;
 	}
 }
+

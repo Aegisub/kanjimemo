@@ -8,7 +8,8 @@
 void KanjiMemo::Init()
 {
 	using namespace Halley;
-	Video::SetVideo(false,Vector2i(1280,720),Vector2f(1600,1000));
+	//Video::SetVideo(false,Vector2i(1280,720),Vector2f(1600,1000));
+	Video::SetVideo(true,Vector2i(1680,1050),Vector2f(1600,1000));
 	//Video::SetVideo(false,Vector2i(1600,1000));
 	SetTopFrame(spFrame(new FrameBackground));
 }
