@@ -104,14 +104,16 @@ namespace Halley {
 
 		void DrawString(std::string text,Vector2f pos, float scale);
 
-	protected:
-		virtual void DoSetFont(std::string face,int size,bool bold,bool italics);
-		virtual void DoSetColour(Colour col);
-		virtual void DoSetBorder(Colour col, float width);
-		virtual void DoPrint(std::string text, Vector2f pos, float scale);
-		virtual void DoGetExtent(std::string text, Vector2f &pos);
-
 	public:
+		virtual void SetFont(std::string face,int size,bool bold,bool italics);
+		virtual void SetColour(Colour col);
+		virtual void SetBorder(Colour col, float width);
+		virtual void Print(std::string text, Vector2f pos, float scale=1.0f);
+		virtual void GetExtent(std::string text, Vector2f &pos);
+
+		virtual void LoadGlyphs(std::string text);
+		virtual void Clear();
+
 		~OpenGLText();
 	};
 }

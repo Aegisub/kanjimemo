@@ -20,6 +20,7 @@
 #include <wx/dcmemory.h>
 #include <wx/image.h>
 #include "draw_text_gl.h"
+#include "video.h"
 using namespace Halley;
 
 
@@ -49,25 +50,28 @@ OpenGLText::OpenGLText() {
 
 //////////////
 // Destructor
-OpenGLText::~OpenGLText() {
+OpenGLText::~OpenGLText()
+{
 	Reset();
 }
 
 
 /////////
 // Reset
-void OpenGLText::Reset() {
+void OpenGLText::Reset()
+{
 	textures.clear();
 	glyphs.clear();
 	outlines.clear();
-	drawOutline = 0;
-	outline = 0;
+	//drawOutline = 0;
+	//outline = 0;
 }
 
 
 ////////////
 // Set font
-void OpenGLText::DoSetFont(std::string face,int size,bool bold,bool italics) {
+void OpenGLText::SetFont(std::string face,int size,bool bold,bool italics)
+{
 	// No change required
 	if (size == fontSize && face == fontFace && bold == fontBold && italics == fontItalics) return;
 
@@ -87,14 +91,16 @@ void OpenGLText::DoSetFont(std::string face,int size,bool bold,bool italics) {
 
 //////////////
 // Set colour
-void OpenGLText::DoSetColour(Colour _col) {
+void OpenGLText::SetColour(Colour _col)
+{
 	col = _col;
 }
 
 
 //////////////
 // Set border
-void OpenGLText::DoSetBorder(Colour _col, float width) {
+void OpenGLText::SetBorder(Colour _col, float width)
+{
 	borderCol = _col;
 	outline = width;
 }
@@ -102,12 +108,13 @@ void OpenGLText::DoSetBorder(Colour _col, float width) {
 
 /////////
 // Print
-void OpenGLText::DoPrint(std::string text, Vector2f pos, float scale) {
+void OpenGLText::Print(std::string text, Vector2f pos, float scale)
+{
 	// Draw outline
 	if (outline != 0) {
 		shared_ptr<OpenGLText> bord = GetOutline(outline);
-		bord->DoSetColour(borderCol);
-		bord->DoPrint(text, pos, scale);
+		bord->SetColour(borderCol);
+		bord->Print(text, pos, scale);
 	}
 
 	// Set OpenGL
@@ -126,8 +133,10 @@ void OpenGLText::DoPrint(std::string text, Vector2f pos, float scale) {
 
 /////////////////
 // Draw a string
-void OpenGLText::DrawString(std::string text,Vector2f pos, float scale) {
+void OpenGLText::DrawString(std::string text,Vector2f pos, float scale)
+{
 	// Variables
+	scale *= 1/Video::GetScale();
 	float x = pos.x;
 	float y = pos.y;
 	size_t len = text.length();
@@ -161,7 +170,8 @@ void OpenGLText::DrawString(std::string text,Vector2f pos, float scale) {
 
 /////////////////////////
 // Calculate text extent
-void OpenGLText::DoGetExtent(std::string text,Vector2f &pos) {
+void OpenGLText::GetExtent(std::string text,Vector2f &pos)
+{
 	// Variables
 	size_t len = text.length();
 	OpenGLTextGlyph glyph;
@@ -197,9 +207,28 @@ void OpenGLText::DoGetExtent(std::string text,Vector2f &pos) {
 }
 
 
+//////////////////
+// Preload glyphs
+void OpenGLText::LoadGlyphs(std::string text)
+{
+	for (size_t i=0; i<text.length(); i++) {
+		GetGlyph(text[i]);
+	}
+}
+
+
+/////////////////////
+// Unload all glyphs
+void OpenGLText::Clear()
+{
+	Reset();
+}
+
+
 ///////////////
 // Get a glyph
-OpenGLTextGlyph OpenGLText::GetGlyph(int i) {
+OpenGLTextGlyph OpenGLText::GetGlyph(int i)
+{
 	glyphMap::iterator res = glyphs.find(i);
 
 	// Found
@@ -212,7 +241,8 @@ OpenGLTextGlyph OpenGLText::GetGlyph(int i) {
 
 //////////////////
 // Create a glyph
-OpenGLTextGlyph OpenGLText::CreateGlyph(int n) {
+OpenGLTextGlyph OpenGLText::CreateGlyph(int n)
+{
 	// Create glyph
 	OpenGLTextGlyph glyph;
 	glyph.font = font;
@@ -247,7 +277,7 @@ shared_ptr<OpenGLText> OpenGLText::GetOutline(float width)
 {
 	if (outlines.find(width) == outlines.end()) {
 		shared_ptr<OpenGLText> text(new OpenGLText());
-		text->DoSetFont(fontFace, fontSize, fontBold, fontItalics);
+		text->SetFont(fontFace, fontSize, fontBold, fontItalics);
 		text->drawOutline = width;
 		outlines[width] = text;
 	}
@@ -258,7 +288,8 @@ shared_ptr<OpenGLText> OpenGLText::GetOutline(float width)
 
 ///////////////////////
 // Texture constructor
-OpenGLTextTexture::OpenGLTextTexture(int w,int h) {
+OpenGLTextTexture::OpenGLTextTexture(int w,int h)
+{
 	// Properties
 	x = y = 0;
 	width = SmallestPowerOf2(w);
@@ -285,7 +316,8 @@ OpenGLTextTexture::OpenGLTextTexture(int w,int h) {
 
 //////////////////////
 // Texture destructor
-OpenGLTextTexture::~OpenGLTextTexture() {
+OpenGLTextTexture::~OpenGLTextTexture()
+{
 	if (tex) {
 		glDeleteTextures(1,&tex);
 		tex = 0;
@@ -295,7 +327,8 @@ OpenGLTextTexture::~OpenGLTextTexture() {
 
 //////////////////////////
 // Can fit a glyph in it?
-bool OpenGLTextTexture::TryToInsert(OpenGLTextGlyph &glyph, shared_ptr<wxFont> font, float outline) {
+bool OpenGLTextTexture::TryToInsert(OpenGLTextGlyph &glyph, shared_ptr<wxFont> font, float outline)
+{
 	// Get size
 	int w = glyph.w;
 	int h = glyph.h;
@@ -325,7 +358,8 @@ bool OpenGLTextTexture::TryToInsert(OpenGLTextGlyph &glyph, shared_ptr<wxFont> f
 
 //////////
 // Insert
-void OpenGLTextTexture::Insert(OpenGLTextGlyph &glyph, shared_ptr<wxFont> font, float outline) {
+void OpenGLTextTexture::Insert(OpenGLTextGlyph &glyph, shared_ptr<wxFont> font, float outline)
+{
 	// Glyph data
 	wxString str = wxChar(glyph.value);
 	int w = glyph.w;
@@ -506,7 +540,8 @@ unsigned char* OpenGLTextTexture::GetLuminanceAlpha(const unsigned char* src, si
 
 ////////////////
 // Draw a glyph
-void OpenGLTextGlyph::Draw(float x,float y,float scale) {
+void OpenGLTextGlyph::Draw(float x,float y,float scale)
+{
 	float dw = (w-2*emptyBorder)*scale;
 	float dh = (h-2*emptyBorder)*scale;
 	float o = (ceil(outline))*scale;
@@ -541,7 +576,8 @@ void OpenGLTextGlyph::Draw(float x,float y,float scale) {
 
 /////////////////////
 // Get glyph metrics
-void OpenGLTextGlyph::GetMetrics() {
+void OpenGLTextGlyph::GetMetrics()
+{
 	static wxBitmap *tempBmp = NULL;
 
 	// Glyph data

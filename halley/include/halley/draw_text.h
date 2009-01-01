@@ -28,26 +28,24 @@ namespace Halley {
 	// OpenGL Text Drawing class
 	class TextDrawer {
 	private:
-		static Colour col, borderColor;
-		static float borderWidth;
-		static std::string curId;
 		static std::map<std::string, shared_ptr<TextDrawer> > instances;
-		static shared_ptr<TextDrawer> GetInstance();
 
 	protected:
-		virtual void DoSetFont(std::string face,int size,bool bold,bool italics) = 0;
-		virtual void DoSetColour(Colour col) = 0;
-		virtual void DoSetBorder(Colour col, float width) = 0;
-		virtual void DoPrint(std::string text, Vector2f pos, float scale) = 0;
-		virtual void DoGetExtent(std::string text, Vector2f &pos) = 0;
+		virtual void SetFont(std::string face,int size,bool bold,bool italics) = 0;
 
 	public:
 		virtual ~TextDrawer() {}
 
-		static void SetFont(std::string face="Verdana",int size=10,bool bold=true,bool italics=false);
-		static void SetColour(Colour col);
-		static void SetBorder(Colour col, float width);
-		static void Print(std::string text, Vector2f pos);
-		static void GetExtent(std::string text, Vector2f &pos);
+		static shared_ptr<TextDrawer> GetDrawer(std::string face="Verdana",int size=10,bool bold=true,bool italics=false);
+
+		virtual void SetColour(Colour col) = 0;
+		virtual void SetBorder(Colour col, float width) = 0;
+		virtual void Print(std::string text, Vector2f pos, float scale=1.0f) = 0;
+		virtual void GetExtent(std::string text, Vector2f &pos) = 0;
+
+		virtual void LoadGlyphs(std::string text) = 0;
+		virtual void Clear() = 0;
 	};
+
+	typedef shared_ptr<TextDrawer> spTextDrawer;
 }

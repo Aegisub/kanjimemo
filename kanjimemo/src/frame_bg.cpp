@@ -63,14 +63,19 @@ void FrameBackground::DoRender()
 	sprites.Draw();
 
 	if (true) {
-		using Halley::TextDrawer;
-		TextDrawer::SetFont("Verdana", 25, true, false);
-		TextDrawer::SetColour(Halley::Colour(1,1,1));
-		TextDrawer::SetBorder(Halley::Colour(0.6f,0.5f,0.3f,1),5);
-		TextDrawer::Print("the quick brown fox jumps over the lazy dog!\n\nTHE QUICK BROWN FOX JUMPS OVER THE LAZY DOG!        O", Halley::Vector2f(20, 400));
+		using namespace Halley;
+		spTextDrawer text = TextDrawer::GetDrawer("Verdana", 25, true, false);
+		text->SetColour(Colour(1,1,1));
+		text->SetBorder(Colour(0.6f,0.5f,0.3f,1),5);
+		text->LoadGlyphs("abcdef");
+		text->Print("the quick brown fox jumps over the lazy dog!\n\nTHE QUICK BROWN FOX JUMPS OVER THE LAZY DOG!", Vector2f(20, 400));
+		//text->Clear();
+		text->Print("Hay guise, sup?", Vector2f(20, 500));
 
-		TextDrawer::SetFont("Harrington", 30, true, false);
-		TextDrawer::Print("Blah blah blah testing multiple fonts.", Halley::Vector2f(20, 200));
+		text = TextDrawer::GetDrawer("Harrington", 30, true, false);
+		text->SetColour(Colour(1,1,1));
+		text->SetBorder(Colour(0.6f,0.5f,0.3f,1),5);
+		text->Print("Blah blah blah testing multiple fonts.", Vector2f(20, 200));
 	}
 }
 
