@@ -666,7 +666,7 @@ StringUTF32 String::GetUTF32()
 	size_t len = length();
 	unsigned int dstChar = 0;
 	for (size_t i=0; i<len;) {
-		Character c0 = operator[](i++);
+		unsigned char c0 = (unsigned char) operator[](i++);
 
 		// 1 byte
 		if ((c0 >> 7) == 0) {
@@ -675,14 +675,15 @@ StringUTF32 String::GetUTF32()
 
 		// 2 bytes
 		else if ((c0 >> 5) == 0x06) {
-			Character c1 = operator[](i++);
-			dstChar = ((c0 & 0x1C) << 5) | ((c0 & 0x03) << 6) | (c0 & 0x3F);
+			unsigned char c1 = (unsigned char) operator[](i++);
+			dstChar = ((c0 & 0x1F) << 6) | (c1 & 0x3F);
 		}
 
 		// 3 bytes
 		else if ((c0 >> 4) == 0x0E) {
-			dstChar = 0;
-			// TODO
+			unsigned char c1 = (unsigned char) operator[](i++);
+			unsigned char c2 = (unsigned char) operator[](i++);
+			dstChar = ((c0 & 0x0F) << 12) | ((c1 & 0x3F) << 6) | (c2 & 0x3F);
 		}
 
 		// 4 bytes
