@@ -626,8 +626,9 @@ size_t String::UTF16toUTF8(const wchar_t *utf16,char *utf8)
 		// Surrogate pair UTF-16
 		else if ((curChar & 0xFC00) == 0xD800) {
 			// Read
-			value = (curChar - 0xD800) << 10;
-			value |= utf16[i+1] & 0x3FF;
+			int c0 = curChar;
+			int c1 = utf16[i+1];
+			value = (((c0 - 0xD800) << 10) | (c1 - 0xDC00)) + 0x10000;
 			i++;
 
 			// Write
@@ -688,8 +689,10 @@ StringUTF32 String::GetUTF32()
 
 		// 4 bytes
 		else if ((c0 >> 3) == 0x1E) {
-			dstChar = 0;
-			// TODO
+			unsigned char c1 = (unsigned char) operator[](i++);
+			unsigned char c2 = (unsigned char) operator[](i++);
+			unsigned char c3 = (unsigned char) operator[](i++);
+			dstChar = ((c0 & 0x07) << 18) | ((c1 & 0x03F) << 12) | ((c2 & 0x3F) << 6) | (c3 & 0x3F);
 		}
 
 		result.push_back(dstChar);

@@ -361,8 +361,18 @@ bool OpenGLTextTexture::TryToInsert(OpenGLTextGlyph &glyph, shared_ptr<wxFont> f
 // Insert
 void OpenGLTextTexture::Insert(OpenGLTextGlyph &glyph, shared_ptr<wxFont> font, float outline)
 {
+	// Get string for glyph
+	wxString str;
+	int value = glyph.value;
+	if (value < 0x10000) str = wxChar(value);
+	else {
+		// UTF-16 surrogate pair
+		int tmp = value - 0x10000;
+		str += wxChar((tmp >> 10) + 0xD800);
+		str += wxChar((tmp & 0x3FF) + 0xDC00);
+	}
+
 	// Glyph data
-	wxString str = wxChar(glyph.value);
 	int w = glyph.w;
 	int h = glyph.h;
 	int border = glyph.emptyBorder;
