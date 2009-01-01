@@ -13,6 +13,10 @@ void FrameStandardGame::Init()
 {
 	font = TextDrawer::GetDrawer("Verdana", 45, true, false);
 	font->LoadGlyphs("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
+	kanjiFonts.push_back(TextDrawer::GetDrawer("MS Mincho", 150, true, false));
+
+	curInput = "";
+	kb = GetKeyboard(true);
 }
 
 
@@ -23,13 +27,24 @@ void FrameStandardGame::DeInit()
 
 void FrameStandardGame::DoUpdate(float time)
 {
+	if (kb->IsKeyPressed(SDLK_ESCAPE)) {
+		Die();
+	}
 }
 
 
 void FrameStandardGame::DoRender()
 {
-	font->SetColour(Colour(1,1,1));
-	font->SetBorder(Colour(0.6f,0.5f,0.3f,1),5);
-	font->Print("Never gonna give you up...", Vector2f(800, 100), Vector2f(0.5, 0));
+	spTextDrawer f;
+	
+	f = kanjiFonts[0];
+	f->SetColour(Colour(1,1,1));
+	f->SetBorder(Colour(), 5);
+	f->Print(String(L"日本語"), Vector2f(800,500), Vector2f(0.5f, 0.5f));
+
+	f = font;
+	f->SetColour(Colour(1,1,1));
+	f->SetBorder(Colour(),3);
+	f->Print(curInput+"_", Vector2f(800, 100), Vector2f(0.5f, 0));
 }
 

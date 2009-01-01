@@ -25,8 +25,9 @@ using namespace Halley;
 
 ///////////////
 // Constructor
-Game::Game()
+Game::Game(String gameName)
 {
+	name = gameName;
 	run = true;
 	fps = 60;
 	srand((unsigned)time(NULL));
@@ -48,13 +49,16 @@ void Game::Start()
 	int result;
 	result = SDL_Init(SDL_INIT_EVERYTHING);
 	if (result == -1) {
-		// TODO
 		throw std::exception(SDL_GetError());
 	}
+
+	// Set stuff up
+	SDL_EnableUNICODE(1);
 
 	// Initialize the game
 	try {
 		Init();
+		SDL_WM_SetCaption(name.c_str(), name.c_str());
 	}
 	catch (...) {}
 
@@ -127,7 +131,10 @@ void Game::Quit()
 // Child frame was destroyed
 void Game::ChildFrameChange(spFrame from,spFrame to)
 {
-	(void)from;
+	if (from != topFrame)
+		throw std::exception("Invalid top frame");
+
+	topFrame = spFrame();
 	if (!to) Quit();
 	else SetTopFrame(to);
 }
@@ -169,16 +176,14 @@ void Game::SetInstance(spGame game)
 // Poll events
 void Game::PollEvents()
 {
+	keyboard.ClearPresses();
 	SDL_Event event;
 	SDL_PumpEvents();
 	while (SDL_PeepEvents(&event, 1, SDL_GETEVENT, SDL_ALLEVENTS) > 0) {
 		switch (event.type) {
 			case SDL_KEYDOWN:
 				{
-					//int type = event.key.type;
-					int code = event.key.keysym.sym;
-					//int mod = event.key.keysym.mod;
-					if (code == SDLK_ESCAPE) Quit();
+					keyboard.ProcessEvent(event.key);
 					break;
 				}
 			case SDL_QUIT:
@@ -188,4 +193,9 @@ void Game::PollEvents()
 				}
 		}
 	}
+}
+
+spInputKeyboard Game::CreateKeyboard(bool exclusive)
+{
+	return keyboard.CreateChild(exclusive);
 }

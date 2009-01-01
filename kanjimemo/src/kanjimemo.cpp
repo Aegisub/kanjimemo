@@ -3,6 +3,14 @@
 #include "halley/halley.h"
 
 
+///////////////
+// Constructor
+KanjiMemo::KanjiMemo()
+: Halley::Game("KanjiMemo")
+{
+}
+
+
 //////////////
 // Initialize
 void KanjiMemo::Init()

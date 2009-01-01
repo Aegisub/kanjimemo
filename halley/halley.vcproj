@@ -319,6 +319,18 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="Input"
+			>
+			<File
+				RelativePath=".\src\input_keyboard.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\include\halley\input_keyboard.h"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>

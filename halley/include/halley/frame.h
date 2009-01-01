@@ -30,9 +30,11 @@ namespace Halley {
 	private:
 		String name;
 		bool hasBeenInit;
+		bool alive;
 
 		wpFrameParent parent;
 		wpFrame weakThis;
+		spInputKeyboard kb;
 
 		std::list<spFrame> children;
 
@@ -41,10 +43,13 @@ namespace Halley {
 		void TryInit();
 		void TryDeInit();
 
+		void ChildFrameChange(spFrame from,spFrame to);
+		spInputKeyboard CreateKeyboard(bool exclusive);
+
+		void SetParent(wpFrameParent parent, wpFrame weakThis);
+
 		void Update(float time);
 		void Render();
-		void ChildFrameChange(spFrame from,spFrame to);
-		void SetParent(wpFrameParent parent, wpFrame weakThis);
 
 	protected:
 		virtual void Init() {}
@@ -55,6 +60,7 @@ namespace Halley {
 		void Switch(spFrame to);
 		void Die();
 		void AddChild(spFrame child);
+		spInputKeyboard GetKeyboard(bool exclusive);
 
 	public:
 		Frame(String name);

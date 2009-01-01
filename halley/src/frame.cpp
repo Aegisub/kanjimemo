@@ -17,6 +17,7 @@
 \*********************************************************/
 
 #include "frame.h"
+#include "input_keyboard.h"
 #include <algorithm>
 using namespace Halley;
 
@@ -50,7 +51,7 @@ void Frame::Switch(spFrame to)
 // Remove this frame
 void Frame::Die()
 {
-	//Destroy(spFrame());
+	Destroy(spFrame());
 }
 
 
@@ -76,6 +77,7 @@ void Frame::AddChild(spFrame child)
 
 			// Switch parents, if necessary
 			child->SetParent(weakThis,wpFrame(child));
+			child->alive = true;
 
 			// Initialize
 			child->TryInit();
@@ -88,7 +90,7 @@ void Frame::AddChild(spFrame child)
 // Remove a destroyed child from list
 void Frame::ChildFrameChange(spFrame from,spFrame to)
 {
-	children.remove(from);
+	from->alive = false;
 	if (to) AddChild(to);
 }
 
@@ -111,8 +113,19 @@ void Frame::SetParent(wpFrameParent par, wpFrame wThis)
 void Frame::Update(float time)
 {
 	DoUpdate(time);
+
+	std::vector<spFrame> toRemove;
 	for (std::list<spFrame>::iterator cur=children.begin();cur!=children.end();cur++) {
-		(*cur)->Update(time);
+		spFrame curFrame = *cur;
+		if (curFrame->alive) {
+			curFrame->Update(time);
+		} else {
+			toRemove.push_back(curFrame);
+		}
+	}
+
+	for (size_t i=0; i<toRemove.size(); i++) {
+		children.remove(toRemove[i]);
 	}
 }
 
@@ -140,4 +153,26 @@ void Frame::TryDeInit()
 {
 	if (hasBeenInit) DeInit();
 	hasBeenInit = false;
+}
+
+
+///////////////////
+// Create keyboard
+spInputKeyboard Frame::CreateKeyboard(bool exclusive)
+{
+	if (kb)
+		return kb->CreateChild(exclusive);
+	else
+		return parent.lock()->CreateKeyboard(exclusive);
+}
+
+
+////////////////
+// Get keyboard
+spInputKeyboard Frame::GetKeyboard(bool exclusive)
+{
+	if (kb)
+		return kb;
+	else
+		return parent.lock()->CreateKeyboard(exclusive);
 }

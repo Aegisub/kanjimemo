@@ -20,6 +20,7 @@
 
 #include "frame.h"
 #include "interfaces.h"
+#include "input_keyboard.h"
 
 namespace Halley {
 	class Game;
@@ -32,10 +33,14 @@ namespace Halley {
 
 		int fps;
 		bool run;
+		String name;
 		spFrame topFrame;
+		InputKeyboard keyboard;
+
+		void ChildFrameChange(spFrame from,spFrame to);
+		spInputKeyboard CreateKeyboard(bool exclusive);
 
 		void Run();
-		void ChildFrameChange(spFrame from,spFrame to);
 		void PollEvents();
 
 	protected:
@@ -46,7 +51,7 @@ namespace Halley {
 		void Quit();
 
 	public:
-		Game();
+		Game(String gameName);
 		virtual ~Game();
 
 		void Start();
