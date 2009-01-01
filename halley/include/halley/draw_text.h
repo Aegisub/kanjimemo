@@ -41,8 +41,8 @@ namespace Halley {
 
 		virtual void SetColour(Colour col) = 0;
 		virtual void SetBorder(Colour col, float width) = 0;
-		virtual void Print(String text, Vector2f pos, float scale=1.0f) = 0;
-		virtual void GetExtent(String text, Vector2f &pos) = 0;
+		virtual void Print(String text, Vector2f pos, Vector2f align=Vector2f(0,0), float scale=1.0f) = 0;
+		virtual Vector2f GetExtent(String text) = 0;
 
 		virtual void LoadGlyphs(String text) = 0;
 		virtual void Clear() = 0;

@@ -27,6 +27,9 @@ using namespace Halley;
 // Static members
 std::map<String, shared_ptr<TextDrawer> > TextDrawer::instances;
 
+#ifdef _MSC_VER
+#pragma warning (disable: 4748)
+#endif
 
 shared_ptr<TextDrawer> TextDrawer::GetDrawer(String face, int size, bool bold, bool italics)
 {
@@ -41,16 +44,14 @@ shared_ptr<TextDrawer> TextDrawer::GetDrawer(String face, int size, bool bold, b
 		return result->second;
 	}
 
-	// Not found; create
-	else {
-		// Get the actual font size
-		int actualSize = int((size * Video::GetScale()) + 0.5);
+	// Not found, so create it
+	// Get the actual font size
+	int actualSize = int((size * Video::GetScale()) + 0.5);
 
-		// Create instance
-		spTextDrawer result = shared_ptr<TextDrawer>(new OpenGLText());
-		result->SetFont(face,actualSize,bold,italics);
-		instances[curId] = result;
-		return result;
-	}
+	// Create instance
+	spTextDrawer res = shared_ptr<TextDrawer>(new OpenGLText());
+	res->SetFont(face,actualSize,bold,italics);
+	instances[curId] = res;
+	return res;
 }
 

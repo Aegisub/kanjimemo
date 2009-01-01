@@ -108,13 +108,19 @@ void OpenGLText::SetBorder(Colour _col, float width)
 
 /////////
 // Print
-void OpenGLText::Print(String text, Vector2f pos, float scale)
+void OpenGLText::Print(String text, Vector2f pos, Vector2f align, float origScale)
 {
+	// Adjust scale
+	float scale = origScale / Video::GetScale();
+
+	// Adjust position
+	pos -= align * (scale * GetExtent(text));
+
 	// Draw outline
 	if (outline != 0) {
 		shared_ptr<OpenGLText> bord = GetOutline(outline);
 		bord->SetColour(borderCol);
-		bord->Print(text, pos, scale);
+		bord->Print(text, pos, Vector2f(0,0), origScale);
 	}
 
 	// Set OpenGL
@@ -136,7 +142,6 @@ void OpenGLText::Print(String text, Vector2f pos, float scale)
 void OpenGLText::DrawString(StringUTF32 text,Vector2f pos, float scale)
 {
 	// Variables
-	scale *= 1/Video::GetScale();
 	float x = pos.x;
 	float y = pos.y;
 	size_t len = text.length();
@@ -159,8 +164,8 @@ void OpenGLText::DrawString(StringUTF32 text,Vector2f pos, float scale)
 		else {
 			glyph = GetGlyph(curChar);
 			glyph.Draw(dx,dy,scale);
-			float gw = glyph.w - 2*glyph.border;
-			float gh = glyph.h - 2*glyph.border;
+			float gw = glyph.GetAdvanceX();
+			float gh = glyph.GetAdvanceY();
 			dx += gw * scale;
 			if (gh > lineHeight) lineHeight = gh;
 		}
@@ -170,7 +175,7 @@ void OpenGLText::DrawString(StringUTF32 text,Vector2f pos, float scale)
 
 /////////////////////////
 // Calculate text extent
-void OpenGLText::GetExtent(String _text,Vector2f &pos)
+Vector2f OpenGLText::GetExtent(String _text)
 {
 	// Variables
 	StringUTF32 text = _text.GetUTF32();
@@ -178,8 +183,7 @@ void OpenGLText::GetExtent(String _text,Vector2f &pos)
 	OpenGLTextGlyph glyph;
 	lineHeight = 0;
 	int dx=0,dy=0;
-	pos.x = 0;
-	pos.y = 0;
+	Vector2f pos;
 
 	// Simulate drawing of string
 	for (size_t i=0;i<len;i++) {
@@ -197,14 +201,18 @@ void OpenGLText::GetExtent(String _text,Vector2f &pos)
 		// Handle normal glyphs
 		else {
 			glyph = GetGlyph(curChar);
-			dx += glyph.w;
-			if (glyph.h > lineHeight) lineHeight = glyph.h;
+			dx += glyph.GetAdvanceX();
+			if (glyph.h > lineHeight) lineHeight = glyph.GetAdvanceY();
 		}
 	}
 
-	// Return results
+	// Finish computing
 	if (dx > pos.x) pos.x = dx;
 	pos.y = dy+lineHeight;
+
+	// Scale and return
+	//pos /= Video::GetScale();
+	return pos;
 }
 
 
@@ -514,6 +522,10 @@ unsigned char* OpenGLTextTexture::ExtendBorder(const unsigned char* __restrict s
 
 unsigned char* OpenGLTextTexture::Subtract(const unsigned char* img1, const unsigned char* img2, size_t w, size_t h)
 {
+	(void) img1;
+	(void) img2;
+	(void) w;
+	(void) h;
 	return NULL;
 }
 

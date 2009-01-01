@@ -243,6 +243,10 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="Kanji"
+			>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>

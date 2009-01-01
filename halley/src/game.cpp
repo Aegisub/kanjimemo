@@ -175,9 +175,9 @@ void Game::PollEvents()
 		switch (event.type) {
 			case SDL_KEYDOWN:
 				{
-					int type = event.key.type;
+					//int type = event.key.type;
 					int code = event.key.keysym.sym;
-					int mod = event.key.keysym.mod;
+					//int mod = event.key.keysym.mod;
 					if (code == SDLK_ESCAPE) Quit();
 					break;
 				}

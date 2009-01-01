@@ -45,6 +45,8 @@ namespace Halley {
 
 		void GetMetrics();
 		void Draw(float x, float y, float scale);
+		float GetAdvanceX() { return w - 2*border; }
+		float GetAdvanceY() { return h - 2*border; }
 	};
 
 	typedef std::map<int,OpenGLTextGlyph> glyphMap;
@@ -108,8 +110,8 @@ namespace Halley {
 		virtual void SetFont(String face,int size,bool bold,bool italics);
 		virtual void SetColour(Colour col);
 		virtual void SetBorder(Colour col, float width);
-		virtual void Print(String text, Vector2f pos, float scale=1.0f);
-		virtual void GetExtent(String text, Vector2f &pos);
+		virtual void Print(String text, Vector2f pos, Vector2f align=Vector2f(0,0), float scale=1.0f);
+		virtual Vector2f GetExtent(String text);
 
 		virtual void LoadGlyphs(String text);
 		virtual void Clear();

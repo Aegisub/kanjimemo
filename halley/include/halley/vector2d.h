@@ -55,12 +55,16 @@ namespace Halley {
 		inline bool operator != (const Vector2D &param) const { return x != param.x || y != param.y; }
 
 		// Basic algebra
-		inline Vector2D operator - () const { return Vector2D(-x,-y); }
 		inline Vector2D operator + (const Vector2D &param) const { return Vector2D(x + param.x,y + param.y); }
 		inline Vector2D operator - (const Vector2D &param) const { return Vector2D(x - param.x,y - param.y); }
+		inline Vector2D operator * (const Vector2D &param) const { return Vector2D(x * param.x,y * param.y); }
+		inline Vector2D operator / (const Vector2D &param) const { return Vector2D(x / param.x,y / param.y); }
+		inline Vector2D operator % (const Vector2D &param) const { return Vector2D(Mod<T>(x, param.x), Mod<T>(y, param.y)); }
+
+		inline Vector2D operator - () const { return Vector2D(-x,-y); }
+
 		inline Vector2D operator * (const T param) const { return Vector2D(x * param,y * param); }
 		inline Vector2D operator / (const T param) const { return Vector2D(x / param,y / param); }
-		inline Vector2D operator % (const Vector2D &param) const { return Vector2D(Mod<T>(x, param.x), Mod<T>(y, param.y)); }
 
 		// In-place operations
 		inline Vector2D operator += (const Vector2D &param) { x += param.x; y += param.y; return *this; }
