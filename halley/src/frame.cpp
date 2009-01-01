@@ -23,7 +23,7 @@ using namespace Halley;
 
 ///////////////
 // Constructor
-Frame::Frame(std::string _name)
+Frame::Frame(String _name)
 : name(_name), hasBeenInit(false)
 {
 }

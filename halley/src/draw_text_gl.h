@@ -89,7 +89,7 @@ namespace Halley {
 		bool fontItalics;
 		float outline;
 		float drawOutline;
-		std::string fontFace;
+		String fontFace;
 		shared_ptr<wxFont> font;
 
 		glyphMap glyphs;
@@ -102,16 +102,16 @@ namespace Halley {
 		void Reset();
 		shared_ptr<OpenGLText> GetOutline(float width);
 
-		void DrawString(std::string text,Vector2f pos, float scale);
+		void DrawString(String text,Vector2f pos, float scale);
 
 	public:
-		virtual void SetFont(std::string face,int size,bool bold,bool italics);
+		virtual void SetFont(String face,int size,bool bold,bool italics);
 		virtual void SetColour(Colour col);
 		virtual void SetBorder(Colour col, float width);
-		virtual void Print(std::string text, Vector2f pos, float scale=1.0f);
-		virtual void GetExtent(std::string text, Vector2f &pos);
+		virtual void Print(String text, Vector2f pos, float scale=1.0f);
+		virtual void GetExtent(String text, Vector2f &pos);
 
-		virtual void LoadGlyphs(std::string text);
+		virtual void LoadGlyphs(String text);
 		virtual void Clear();
 
 		~OpenGLText();

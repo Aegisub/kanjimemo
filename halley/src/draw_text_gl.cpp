@@ -70,7 +70,7 @@ void OpenGLText::Reset()
 
 ////////////
 // Set font
-void OpenGLText::SetFont(std::string face,int size,bool bold,bool italics)
+void OpenGLText::SetFont(String face,int size,bool bold,bool italics)
 {
 	// No change required
 	if (size == fontSize && face == fontFace && bold == fontBold && italics == fontItalics) return;
@@ -108,7 +108,7 @@ void OpenGLText::SetBorder(Colour _col, float width)
 
 /////////
 // Print
-void OpenGLText::Print(std::string text, Vector2f pos, float scale)
+void OpenGLText::Print(String text, Vector2f pos, float scale)
 {
 	// Draw outline
 	if (outline != 0) {
@@ -133,7 +133,7 @@ void OpenGLText::Print(std::string text, Vector2f pos, float scale)
 
 /////////////////
 // Draw a string
-void OpenGLText::DrawString(std::string text,Vector2f pos, float scale)
+void OpenGLText::DrawString(String text,Vector2f pos, float scale)
 {
 	// Variables
 	scale *= 1/Video::GetScale();
@@ -170,7 +170,7 @@ void OpenGLText::DrawString(std::string text,Vector2f pos, float scale)
 
 /////////////////////////
 // Calculate text extent
-void OpenGLText::GetExtent(std::string text,Vector2f &pos)
+void OpenGLText::GetExtent(String text,Vector2f &pos)
 {
 	// Variables
 	size_t len = text.length();
@@ -209,7 +209,7 @@ void OpenGLText::GetExtent(std::string text,Vector2f &pos)
 
 //////////////////
 // Preload glyphs
-void OpenGLText::LoadGlyphs(std::string text)
+void OpenGLText::LoadGlyphs(String text)
 {
 	for (size_t i=0; i<text.length(); i++) {
 		GetGlyph(text[i]);

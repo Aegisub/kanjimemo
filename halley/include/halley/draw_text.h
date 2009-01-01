@@ -23,27 +23,28 @@
 #include "colour.h"
 #include "interfaces.h"
 #include "vector2d.h"
+#include "halleystring.h"
 
 namespace Halley {
 	// OpenGL Text Drawing class
 	class TextDrawer {
 	private:
-		static std::map<std::string, shared_ptr<TextDrawer> > instances;
+		static std::map<String, shared_ptr<TextDrawer> > instances;
 
 	protected:
-		virtual void SetFont(std::string face,int size,bool bold,bool italics) = 0;
+		virtual void SetFont(String face,int size,bool bold,bool italics) = 0;
 
 	public:
 		virtual ~TextDrawer() {}
 
-		static shared_ptr<TextDrawer> GetDrawer(std::string face="Verdana",int size=10,bool bold=true,bool italics=false);
+		static shared_ptr<TextDrawer> GetDrawer(String face="Verdana",int size=10,bool bold=true,bool italics=false);
 
 		virtual void SetColour(Colour col) = 0;
 		virtual void SetBorder(Colour col, float width) = 0;
-		virtual void Print(std::string text, Vector2f pos, float scale=1.0f) = 0;
-		virtual void GetExtent(std::string text, Vector2f &pos) = 0;
+		virtual void Print(String text, Vector2f pos, float scale=1.0f) = 0;
+		virtual void GetExtent(String text, Vector2f &pos) = 0;
 
-		virtual void LoadGlyphs(std::string text) = 0;
+		virtual void LoadGlyphs(String text) = 0;
 		virtual void Clear() = 0;
 	};
 

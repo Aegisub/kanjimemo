@@ -32,6 +32,7 @@
 #include "rect.h"
 #include "draw_primitive.h"
 #include "draw_text.h"
+#include "halleystring.h"
 
 // Macro to implement program
 #define HalleyGame(T) int main(int argc, char* argv[]) { (void) argc; (void) argv; Halley::Game::SetInstance(Halley::spGame(new T)); Halley::Game::GetInstance()->Start(); return 0; }

@@ -192,20 +192,20 @@
 				RelativePath=".\src\stdafx.h"
 				>
 			</File>
-			<File
-				RelativePath=".\src\video.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\include\halley\video.h"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Utils"
 			>
 			<File
 				RelativePath=".\include\halley\angle.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\halleystring.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\include\halley\halleystring.h"
 				>
 			</File>
 			<File
@@ -302,6 +302,18 @@
 			</File>
 			<File
 				RelativePath=".\src\draw_text_gl.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Video"
+			>
+			<File
+				RelativePath=".\src\video.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\include\halley\video.h"
 				>
 			</File>
 		</Filter>

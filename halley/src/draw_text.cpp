@@ -25,16 +25,16 @@ using namespace Halley;
 
 //////////////////
 // Static members
-std::map<std::string, shared_ptr<TextDrawer> > TextDrawer::instances;
+std::map<String, shared_ptr<TextDrawer> > TextDrawer::instances;
 
 
-shared_ptr<TextDrawer> TextDrawer::GetDrawer(std::string face, int size, bool bold, bool italics)
+shared_ptr<TextDrawer> TextDrawer::GetDrawer(String face, int size, bool bold, bool italics)
 {
 	std::stringstream _id;
 	_id << face << ":" << size << ":" << bold << ":" << italics;
-	std::string curId = _id.str();
+	String curId = _id.str();
 
-	std::map<std::string, shared_ptr<TextDrawer> >::iterator result = instances.find(curId);
+	std::map<String, shared_ptr<TextDrawer> >::iterator result = instances.find(curId);
 
 	// Found, return it
 	if (result != instances.end()) {

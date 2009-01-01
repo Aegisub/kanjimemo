@@ -20,6 +20,7 @@
 
 #include <list>
 #include "interfaces.h"
+#include "halleystring.h"
 
 namespace Halley {
 	// Frame class
@@ -27,7 +28,7 @@ namespace Halley {
 		friend class Game;
 
 	private:
-		std::string name;
+		String name;
 		bool hasBeenInit;
 
 		wpFrameParent parent;
@@ -56,7 +57,7 @@ namespace Halley {
 		void AddChild(spFrame child);
 
 	public:
-		Frame(std::string name);
+		Frame(String name);
 		virtual ~Frame();
 	};
 
