@@ -231,6 +231,18 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="Standard game"
+			>
+			<File
+				RelativePath=".\src\frame_stdgame.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\frame_stdgame.h"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>

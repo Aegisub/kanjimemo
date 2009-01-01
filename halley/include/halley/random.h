@@ -18,9 +18,18 @@
 
 #pragma once
 
+#include <random>
+
 namespace Halley {
+	typedef std::tr1::mt19937 gen_type;
 	class Random {
+	private:
+		//gen_type generator;
+		//std::tr1::variate_generator<gen_type& , std::tr1::uniform_real<float> > rng;
+
 	public:
+		Random();
+
 		template <typename T>
 		T Get(T max)
 		{

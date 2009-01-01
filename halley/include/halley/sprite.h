@@ -32,7 +32,7 @@ namespace Halley {
 		virtual void DoDraw() {}
 
 	public:
-		virtual void Update(float time) {}
+		virtual void Update(float time) { (void) time; }
 		void Draw();
 
 		Vector2f GetPosition() const { return pos; }

@@ -17,10 +17,24 @@
 \*********************************************************/
 
 #include "random.h"
+#include <ctime>
 #include <cstdlib>
 using namespace Halley;
 
+Random::Random()
+//: generator((unsigned)rand()),
+//  rng(generator, std::tr1::uniform_real<float>(0, 1))
+{
+
+}
+
 double Random::GetDouble()
 {
-	return (double)rand() / (double)RAND_MAX;
+	/*
+	double value = rng();
+	assert (value >= 0);
+	assert (value < 1);
+	return value;
+	*/
+	return ((double)rand())/RAND_MAX;
 }
