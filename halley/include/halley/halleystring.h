@@ -57,7 +57,6 @@ namespace Halley {
 
 		bool IsEmpty() const;
 		size_t Length() const;
-		size_t UTF8Length() const;
 		
 		void SetSize(size_t size);
 		void Truncate(size_t size);

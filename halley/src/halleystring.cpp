@@ -194,12 +194,6 @@ size_t String::Length() const
 }
 
 
-size_t String::UTF8Length() const 
-{
-	throw std::exception("TODO");
-}
-
-
 bool String::Contains(const String& string) const
 {
 	return find(string) != npos;
@@ -667,7 +661,7 @@ StringUTF32 String::GetUTF32()
 	size_t len = length();
 	unsigned int dstChar = 0;
 	for (size_t i=0; i<len;) {
-		unsigned char c0 = (unsigned char) operator[](i++);
+		unsigned int c0 = (unsigned char) operator[](i++);
 
 		// 1 byte
 		if ((c0 >> 7) == 0) {
@@ -676,23 +670,29 @@ StringUTF32 String::GetUTF32()
 
 		// 2 bytes
 		else if ((c0 >> 5) == 0x06) {
-			unsigned char c1 = (unsigned char) operator[](i++);
-			dstChar = ((c0 & 0x1F) << 6) | (c1 & 0x3F);
+			unsigned int c1 = (unsigned char) operator[](i++);
+			if ((c1 >> 6) == 0x02) {
+				dstChar = ((c0 & 0x1F) << 6) | (c1 & 0x3F);
+			}
 		}
 
 		// 3 bytes
 		else if ((c0 >> 4) == 0x0E) {
-			unsigned char c1 = (unsigned char) operator[](i++);
-			unsigned char c2 = (unsigned char) operator[](i++);
-			dstChar = ((c0 & 0x0F) << 12) | ((c1 & 0x3F) << 6) | (c2 & 0x3F);
+			unsigned int c1 = (unsigned char) operator[](i++);
+			unsigned int c2 = (unsigned char) operator[](i++);
+			if ((c1 >> 6) == 0x02 && (c2 >> 6) == 0x02) {
+				dstChar = ((c0 & 0x0F) << 12) | ((c1 & 0x3F) << 6) | (c2 & 0x3F);
+			}
 		}
 
 		// 4 bytes
 		else if ((c0 >> 3) == 0x1E) {
-			unsigned char c1 = (unsigned char) operator[](i++);
-			unsigned char c2 = (unsigned char) operator[](i++);
-			unsigned char c3 = (unsigned char) operator[](i++);
-			dstChar = ((c0 & 0x07) << 18) | ((c1 & 0x03F) << 12) | ((c2 & 0x3F) << 6) | (c3 & 0x3F);
+			unsigned int c1 = (unsigned char) operator[](i++);
+			unsigned int c2 = (unsigned char) operator[](i++);
+			unsigned int c3 = (unsigned char) operator[](i++);
+			if ((c1 >> 6) == 0x02 && (c2 >> 6) == 0x02 && (c3 >> 6) == 0x02) {
+				dstChar = ((c0 & 0x07) << 18) | ((c1 & 0x03F) << 12) | ((c2 & 0x3F) << 6) | (c3 & 0x3F);
+			}
 		}
 
 		result.push_back(dstChar);
