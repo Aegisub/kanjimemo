@@ -44,6 +44,8 @@ namespace Halley {
 	class IFrameParent {
 	public:
 		virtual ~IFrameParent() {}
+
+		virtual void Exit()=0;
 		virtual void ChildFrameChange(shared_ptr<Frame> from,shared_ptr<Frame> to)=0;
 		virtual spInputKeyboard CreateKeyboard(bool exclusive)=0;
 	};

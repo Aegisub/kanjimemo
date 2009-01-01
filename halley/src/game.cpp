@@ -70,6 +70,7 @@ void Game::Start()
 
 	// Deinitialize the game
 	try {
+		SetTopFrame(spFrame());
 		DeInit();
 	}
 	catch (...) {}
@@ -198,4 +199,9 @@ void Game::PollEvents()
 spInputKeyboard Game::CreateKeyboard(bool exclusive)
 {
 	return keyboard.CreateChild(exclusive);
+}
+
+void Halley::Game::Exit()
+{
+	run = false;
 }

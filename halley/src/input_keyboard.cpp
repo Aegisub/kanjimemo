@@ -139,7 +139,11 @@ bool InputKeyboard::IsKeyDown(int code)
 
 int InputKeyboard::GetNextLetter()
 {
-	int letter = letters.front();
-	letters.pop_front();
-	return letter;
+	if (letters.size()) {
+		int letter = letters.front();
+		letters.pop_front();
+		return letter;
+	} else {
+		return 0;
+	}
 }

@@ -29,12 +29,15 @@ class wxString;
 namespace Halley {
 
 	typedef char Character;
-	typedef std::basic_string<unsigned int> StringUTF32;
+	typedef std::basic_string<int> StringUTF32;
 
 	// String class
 	class String : public std::basic_string<Character> {
 	private:
 		Character* GetCharPointer(size_t pos);
+		static size_t UTF8toUTF16(const char *utf8,wchar_t *utf16);
+		static size_t UTF16toUTF8(const wchar_t *utf16,char *utf8);
+		static size_t UTF32toUTF8(const int *utf32,char *utf8);
 
 	public:
 
@@ -43,6 +46,7 @@ namespace Halley {
 		String(const char* utf8,size_t bytes);
 		String(const basic_string<Character>& str);
 		explicit String(const wchar_t* utf16);
+		explicit String(const StringUTF32 &utf32);
 		explicit String(char character);
 		explicit String(wchar_t character);
 		explicit String(int integer);
@@ -91,6 +95,8 @@ namespace Halley {
 		void AsciiMakeLower();
 		bool AsciiCompareNoCase(const Character *src) const;
 
+		void AppendCharacter(int unicode);
+
 		// Convert a string to an integer
 		int ToInteger() const;
 		int SubToInteger(size_t start,size_t end) const;
@@ -112,8 +118,7 @@ namespace Halley {
 
 		// Static unicode routines
 		static size_t GetUTF8Len(const wchar_t *utf16);
-		static size_t UTF16toUTF8(const wchar_t *utf16,char *utf8);
-		static size_t UTF8toUTF16(const char *utf8,wchar_t *utf16);
+		static size_t GetUTF8Len(const StringUTF32 &utf32);
 
 		//////////
 

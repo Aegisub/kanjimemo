@@ -37,6 +37,7 @@ namespace Halley {
 		spFrame topFrame;
 		InputKeyboard keyboard;
 
+		void Exit();
 		void ChildFrameChange(spFrame from,spFrame to);
 		spInputKeyboard CreateKeyboard(bool exclusive);
 

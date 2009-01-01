@@ -176,3 +176,11 @@ spInputKeyboard Frame::GetKeyboard(bool exclusive)
 	else
 		return parent.lock()->CreateKeyboard(exclusive);
 }
+
+
+/////////////////
+// Exit the game
+void Frame::Exit()
+{
+	parent.lock()->Exit();
+}

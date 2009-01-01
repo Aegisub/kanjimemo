@@ -27,8 +27,14 @@ void FrameStandardGame::DeInit()
 
 void FrameStandardGame::DoUpdate(float time)
 {
+	// Quit program
 	if (kb->IsKeyPressed(SDLK_ESCAPE)) {
-		Die();
+		Exit();
+	}
+
+	// Get text input
+	while (int letter = kb->GetNextLetter()) {
+		curInput.AppendCharacter(letter);
 	}
 }
 

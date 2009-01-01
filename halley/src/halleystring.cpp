@@ -74,6 +74,14 @@ String::String(const wchar_t* utf16)
 }
 
 
+String::String(const StringUTF32 &utf32)
+{
+	size_t len = GetUTF8Len(utf32);
+	resize(len);
+	UTF32toUTF8(&utf32[0],GetCharPointer(0));
+}
+
+
 #ifdef WX_COMPAT
 String::String(const wxString& wxstring)
 {
@@ -571,24 +579,31 @@ size_t String::GetUTF8Len(const wchar_t *utf16)
 {
 	size_t len = 0;
 	wchar_t curChar = utf16[0];
-	for (size_t i=0;curChar;) {
-		// 1 byte
+	for (size_t i=0; curChar; curChar = utf16[++i]) {
 		if ((curChar & 0xFF80) == 0) len++;
-
-		// Surrogate pair UTF-16, 4 bytes
 		else if ((curChar & 0xFC00) == 0xD800) {
 			len += 4;
 			i++;
 		}
-
-		// 3 bytes
 		else if (curChar & 0xF800) len += 3;
-
-		// 2 bytes
 		else if (curChar & 0xFF80) len += 2;
+	}
 
-		// Get next
-		curChar = utf16[++i];
+	return len;
+}
+
+
+///////////////////////////////////////////////
+// Get the UTF-8 length out of a UTF-32 string
+size_t String::GetUTF8Len(const StringUTF32 &str)
+{
+	const int *utf32 = &str[0];
+	size_t len = 0;
+	for (int curChar; (curChar = *utf32) != 0; utf32++) {
+		if (curChar <= 0x7F) len += 1;
+		else if (curChar <= 0x7FF) len += 2;
+		else if (curChar <= 0xFFFF) len += 3;
+		else if (curChar <= 0x10FFFF) len += 4;
 	}
 
 	return len;
@@ -647,6 +662,46 @@ size_t String::UTF16toUTF8(const wchar_t *utf16,char *utf8)
 	return written;
 }
 
+///////////////////////////
+// Convert UTF-32 to UTF-8
+size_t String::UTF32toUTF8(const int *utf32,char *utf8)
+{
+	size_t written = 0;
+	for (int curChar; (curChar = *utf32) != 0; utf32++) {
+		// 1 byte
+		if (curChar <= 0x7F) {
+			utf8[written] = char(curChar);
+			if (curChar == 0) break;
+			written++;
+		}
+
+		// 2 bytes
+		else if (curChar <= 0x7FF) {
+			utf8[written] = char(((curChar & 0x07C0) >> 6)  | 0xC0);
+			utf8[written+1] = char((curChar & 0x003F)       | 0x80);
+			written += 2;
+		}
+
+		// 3 bytes
+		else if (curChar <= 0xFFFF) {
+			utf8[written] = char(((curChar & 0xF000) >> 12)   | 0xE0);
+			utf8[written+1] = char(((curChar & 0x0FC0) >> 6)  | 0x80);
+			utf8[written+2] = char((curChar & 0x003F)         | 0x80);
+			written += 3;
+		}		
+
+		// 4 bytes
+		else if (curChar <= 0x10FFFF) {
+			utf8[written] = char(((curChar & 0x1C0000) >> 18)	| 0xF0);
+			utf8[written+1] = char(((curChar & 0x03F000) >> 12) | 0x80);
+			utf8[written+2] = char(((curChar & 0x000FC0) >> 6)  | 0x80);
+			utf8[written+3] = char((curChar & 0x00003F)         | 0x80);
+			written += 4;
+		}
+	}
+	return written;
+}
+
 size_t String::UTF8toUTF16(const char *utf8,wchar_t *utf16)
 {
 	(void) utf8;
@@ -700,4 +755,19 @@ StringUTF32 String::GetUTF32()
 	}
 
 	return result;
+}
+
+void String::AppendCharacter(int unicode)
+{
+	if (unicode == 8) {
+		StringUTF32 utf32 = GetUTF32();
+		utf32 = utf32.substr(0,utf32.length()-1);
+		*this = String(utf32);
+	}
+
+	else {
+		StringUTF32 utf32;
+		utf32 += unicode;
+		*this += String(utf32);
+	}
 }
