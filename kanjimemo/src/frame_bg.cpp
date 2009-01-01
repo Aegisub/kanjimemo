@@ -1,4 +1,4 @@
-#include "halley/halley.h"
+﻿#include "halley/halley.h"
 #include "frame_bg.h"
 #include "sprite_bg_decor.h"
 
@@ -67,10 +67,8 @@ void FrameBackground::DoRender()
 		spTextDrawer text = TextDrawer::GetDrawer("Verdana", 25, true, false);
 		text->SetColour(Colour(1,1,1));
 		text->SetBorder(Colour(0.6f,0.5f,0.3f,1),5);
-		text->LoadGlyphs("abcdef");
 		text->Print("the quick brown fox jumps over the lazy dog!\n\nTHE QUICK BROWN FOX JUMPS OVER THE LAZY DOG!", Vector2f(20, 400));
-		//text->Clear();
-		text->Print("Hay guise, sup?", Vector2f(20, 500));
+		text->Print(String(L"Moonspeak: これは日本語よ！"), Vector2f(20, 500));
 
 		text = TextDrawer::GetDrawer("Harrington", 30, true, false);
 		text->SetColour(Colour(1,1,1));

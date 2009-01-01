@@ -124,7 +124,7 @@ void OpenGLText::Print(String text, Vector2f pos, float scale)
 
 	// Draw primary string
 	glColor4f(col.r,col.g,col.b,col.a);
-	DrawString(text,pos,scale);
+	DrawString(text.GetUTF32(),pos,scale);
 
 	// Disable blend
 	glDisable(GL_BLEND);
@@ -133,7 +133,7 @@ void OpenGLText::Print(String text, Vector2f pos, float scale)
 
 /////////////////
 // Draw a string
-void OpenGLText::DrawString(String text,Vector2f pos, float scale)
+void OpenGLText::DrawString(StringUTF32 text,Vector2f pos, float scale)
 {
 	// Variables
 	scale *= 1/Video::GetScale();
@@ -170,9 +170,10 @@ void OpenGLText::DrawString(String text,Vector2f pos, float scale)
 
 /////////////////////////
 // Calculate text extent
-void OpenGLText::GetExtent(String text,Vector2f &pos)
+void OpenGLText::GetExtent(String _text,Vector2f &pos)
 {
 	// Variables
+	StringUTF32 text = _text.GetUTF32();
 	size_t len = text.length();
 	OpenGLTextGlyph glyph;
 	lineHeight = 0;

@@ -102,7 +102,7 @@ namespace Halley {
 		void Reset();
 		shared_ptr<OpenGLText> GetOutline(float width);
 
-		void DrawString(String text,Vector2f pos, float scale);
+		void DrawString(StringUTF32 text,Vector2f pos, float scale);
 
 	public:
 		virtual void SetFont(String face,int size,bool bold,bool italics);

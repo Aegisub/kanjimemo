@@ -29,6 +29,7 @@ class wxString;
 namespace Halley {
 
 	typedef char Character;
+	typedef std::basic_string<unsigned int> StringUTF32;
 
 	// String class
 	class String : public std::basic_string<Character> {
@@ -108,7 +109,7 @@ namespace Halley {
 		static String PrettySize(int bytes);
 
 		// Unicode routines
-		std::basic_string<int> GetUTF32();
+		StringUTF32 GetUTF32();
 
 		// Static unicode routines
 		static size_t GetUTF8Len(const wchar_t *utf16);
