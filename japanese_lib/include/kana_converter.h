@@ -30,6 +30,8 @@ namespace Japanese {
 		static bool IsKana(wxChar kana);
 		static bool IsSmallKana(wxChar kana);
 
+		static bool IsKana(const String kana);
+
 	private:
 		static void OffsetCharacterValues(String &str,int offset);
 

@@ -1,6 +1,8 @@
 #include "kanjimemo.h"
 #include "frame_bg.h"
 #include "halley/halley.h"
+#include <wx/wfstream.h>
+#include <wx/zipstrm.h>
 
 
 ///////////////
@@ -21,6 +23,31 @@ void KanjiMemo::Init()
 	//Video::SetVideo(false,Vector2i(1600,1000));
 	//Video::SetVideo(false,Vector2i(1680/4,1050/4),Vector2f(1680,1050));
 	SetTopFrame(spFrame(new FrameBackground));
+
+	
+	if (true) {
+		wxFileInputStream input(_T("kanjidic2.zip"));
+		wxBufferedInputStream buffer(input);
+		wxZipInputStream zip(buffer);
+		wxZipEntry *entry = zip.GetNextEntry();
+		if (entry) {
+			kanji.LoadFromKanjidic2(zip);
+			delete entry;
+		}
+		zip.CloseEntry();
+	}
+
+	if (true) {
+		wxFileInputStream input(_T("jmdict.zip"));
+		wxBufferedInputStream buffer(input);
+		wxZipInputStream zip(buffer);
+		wxZipEntry *entry = zip.GetNextEntry();
+		if (entry) {
+			words.LoadFromJMDict(zip);
+			delete entry;
+		}
+		zip.CloseEntry();
+	}
 }
 
 

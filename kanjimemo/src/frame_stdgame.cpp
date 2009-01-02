@@ -20,7 +20,7 @@ void FrameStandardGame::Init()
 	curInput = "";
 	kb = GetKeyboard(true);
 
-	words = spWordStream(new StandardWordStream);
+	words = spWordStream(new StandardWordStream(std::tr1::dynamic_pointer_cast<KanjiMemo>(Game::GetInstance())));
 }
 
 

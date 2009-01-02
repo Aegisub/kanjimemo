@@ -14,7 +14,7 @@ namespace Japanese {
 		void ParseKanjidic(String kanjidicLine);	// Parse a line from KANJIDIC
 		void ParseKanjidic(wxXmlNode* kanjidicLine);// Parse a line from KANJIDIC2
 
-		boolean IsValid() const;					// Checks if this is a valid kanji
+		bool IsValid() const;					// Checks if this is a valid kanji
 
 		unsigned int GetValue() const;				// [U] field on KANJIDIC
 		unsigned int GetRankOrderFrequency() const;	// [F] field on KANJIDIC

@@ -112,7 +112,7 @@ WordReading WordReading::Parse(String kanjiString,String katakana,const KanjiMan
 	throw WordReadingException();
 }
 
-boolean WordReading::ReadingMatches(String reading,String katakana,String restOfKanji)
+bool WordReading::ReadingMatches(String reading,String katakana,String restOfKanji)
 {
 	String kataReading = KanaConverter::KanaToKatakana(reading);
 

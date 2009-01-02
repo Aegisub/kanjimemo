@@ -22,7 +22,7 @@ Kanji::Kanji(wxXmlNode* node)
 	ParseKanjidic(node);
 }
 
-boolean Kanji::IsValid() const
+bool Kanji::IsValid() const
 {
 	return value != 0;
 }

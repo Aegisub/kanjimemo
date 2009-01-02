@@ -14,7 +14,7 @@ Word::Word(wxXmlNode* node)
 	ParseJMDict(node);
 }
 
-boolean Word::IsValid() const
+bool Word::IsValid() const
 {
 	return (!kanjiString.IsEmpty());
 }

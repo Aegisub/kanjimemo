@@ -154,9 +154,18 @@ bool KanaConverter::IsKatakana(wxChar kana)
 	return kana >= 0x30A1 && kana <= 0x30F6;
 }
 
-bool Japanese::KanaConverter::IsKana(wxChar kana)
+bool KanaConverter::IsKana(wxChar kana)
 {
 	return IsHiragana(kana) || IsKatakana(kana);
+}
+
+bool KanaConverter::IsKana(const String kana)
+{
+	size_t len = kana.Length();
+	for (size_t i=0; i<len; i++) {
+		if (!IsKana(kana[i])) return false;
+	}
+	return true;
 }
 
 bool KanaConverter::IsSmallKana(wxChar kana)

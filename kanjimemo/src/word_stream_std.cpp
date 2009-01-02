@@ -2,7 +2,10 @@
 
 using Halley::String;
 
-StandardWordStream::StandardWordStream()
+StandardWordStream::StandardWordStream(Halley::shared_ptr<KanjiMemo> game)
+: kanaConverter(game->kanaConverter),
+  kanji(game->kanji),
+  jwords(game->words)
 {
 	pos = 0;
 	maxHistory = 2;
@@ -17,7 +20,7 @@ StandardWordStream::StandardWordStream()
 String StandardWordStream::GetWord(int offset)
 {
 	int n = (int) pos + offset;
-	if (n < 0 || n >= words.size()) return "";
+	if (n < 0 || n >= (int)words.size()) return "";
 	return words[n];
 }
 
@@ -33,11 +36,21 @@ void StandardWordStream::Next()
 	}
 }
 
-WordResult StandardWordStream::CheckResult(String entry)
+WordResult StandardWordStream::CheckResult(String _entry)
 {
-	String reading = "nihongo";
+	Japanese::String entry(_entry.c_str(), wxConvUTF8);
+	Japanese::String curWord(GetWord().c_str(), wxConvUTF8);
+	Japanese::String kana;
+	if (kanaConverter.IsKana(curWord))
+		kana = curWord;
+	else {
+		Japanese::Word word = jwords.GetWord(curWord);
+		kana = word.GetKanaString();
+	}
+	Japanese::String reading = kanaConverter.KanaToRoomaji(kana);
+
 	WordResult res;
 	res.success = reading == entry;
-	res.correctReading = reading;
+	res.correctReading = String(reading.c_str());
 	return res;
 }
