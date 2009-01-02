@@ -54,6 +54,7 @@ void Game::Start()
 
 	// Set stuff up
 	SDL_EnableUNICODE(1);
+	SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
 
 	// Initialize the game
 	try {

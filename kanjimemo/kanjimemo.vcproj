@@ -246,6 +246,22 @@
 		<Filter
 			Name="Kanji"
 			>
+			<File
+				RelativePath=".\src\word_result.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\word_stream.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\word_stream_std.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\word_stream_std.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

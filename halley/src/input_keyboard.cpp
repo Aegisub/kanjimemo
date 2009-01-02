@@ -117,8 +117,8 @@ void InputKeyboard::DoClearPresses()
 {
 	size_t len = keyPressed.size();
 	for (size_t i=0; i<len; i++) {
-		keyPressed[i] = 0;
-		keyReleased[i] = 0;
+		keyPressed[i] = false;
+		keyReleased[i] = false;
 	}
 }
 
