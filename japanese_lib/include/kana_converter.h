@@ -16,8 +16,8 @@ namespace Japanese {
 		String RoomajiToKatakana(const String roomaji) const;
 		String RoomajiToHiragana(const String roomaji) const;
 
-		static wxChar KanaToHiragana(wxChar kana);
-		static wxChar KanaToKatakana(wxChar kana);
+		static wxChar KanaToHiragana(UnicodeCharacter kana);
+		static wxChar KanaToKatakana(UnicodeCharacter kana);
 
 		static String KanaToHiragana(const String kana);
 		static String KanaToKatakana(const String kana);
@@ -25,10 +25,10 @@ namespace Japanese {
 		static String KatakanaToHiragana(const String katakana);
 		static StringVector GetPronunciationChanges(const String kana);
 
-		static bool IsHiragana(wxChar kana);
-		static bool IsKatakana(wxChar kana);
-		static bool IsKana(wxChar kana);
-		static bool IsSmallKana(wxChar kana);
+		static bool IsHiragana(UnicodeCharacter kana);
+		static bool IsKatakana(UnicodeCharacter kana);
+		static bool IsKana(UnicodeCharacter kana);
+		static bool IsSmallKana(UnicodeCharacter kana);
 
 		static bool IsKana(const String kana);
 

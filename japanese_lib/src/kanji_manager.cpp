@@ -32,7 +32,7 @@ void KanjiManager::LoadFromKanjidic(wxInputStream &file)
 	while (!file.Eof()) {
 		curLine = text.ReadLine();
 		if (!curLine.IsEmpty()) {
-			AddKanji(Kanji(curLine));
+			AddKanji(Kanji(String(curLine)));
 		}
 	}
 }

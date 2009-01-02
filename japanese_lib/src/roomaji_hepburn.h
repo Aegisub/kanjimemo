@@ -9,7 +9,7 @@ namespace Japanese {
 		RoomajiHepburn(int type);	// 0 = traditional, 1 = revised, 2 = modified
 
 	protected:
-		virtual void AdjustSyllableForPrevious(String &current,const String &previous) const ;
+		virtual void AdjustSyllableForPrevious(String &current,const String &previous) const;
 		virtual bool AdjustSyllableForNext(String &current,const String &next) const;
 
 	private:

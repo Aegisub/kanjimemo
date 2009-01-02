@@ -39,7 +39,7 @@ namespace Japanese {
 
 		void PrependReading(String kanji,String reading);
 
-		static WordReading Parse(String kanji,String katakana,const KanjiManager &kanjiManager);
+		static WordReading Parse(StringUTF32 kanji,StringUTF32 katakana,const KanjiManager &kanjiManager);
 		static bool ReadingMatches(String reading,String katakana,String restOfKanji);
 		static String ClearReading(String reading);
 

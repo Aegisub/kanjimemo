@@ -5,6 +5,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "japanese_lib", "japanese_li
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lib_test", "lib_test\lib_test.vcproj", "{C1AB9DE5-8DC7-4373-AC6A-7F1990DA3059}"
 	ProjectSection(ProjectDependencies) = postProject
+		{92F48717-880A-4405-AA92-C91DE1468375} = {92F48717-880A-4405-AA92-C91DE1468375}
 		{D6A1B1D4-79A8-4621-85E1-9977EABA1C34} = {D6A1B1D4-79A8-4621-85E1-9977EABA1C34}
 	EndProjectSection
 EndProject

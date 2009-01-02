@@ -36,11 +36,10 @@ void StandardWordStream::Next()
 	}
 }
 
-WordResult StandardWordStream::CheckResult(String _entry)
+WordResult StandardWordStream::CheckResult(String entry)
 {
-	Japanese::String entry(_entry.c_str(), wxConvUTF8);
-	Japanese::String curWord(GetWord().c_str(), wxConvUTF8);
-	Japanese::String kana;
+	String curWord = GetWord();
+	String kana;
 	if (kanaConverter.IsKana(curWord))
 		kana = curWord;
 	else {

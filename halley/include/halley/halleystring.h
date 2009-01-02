@@ -22,8 +22,9 @@
 #include <vector>
 #include <string>
 
+#define WX_COMPAT
 #ifdef WX_COMPAT
-class wxString;
+#include <wx/wxprec.h>
 #endif
 
 namespace Halley {
@@ -70,6 +71,10 @@ namespace Halley {
 
 		bool Contains(const String& string) const;
 		size_t Find(Character c) const;
+		size_t Find(String str) const;
+
+		void Replace(String before, String after, bool all=true);
+		void Shrink();
 
 		String Left(size_t n) const;
 		String Right(size_t n) const;
@@ -110,11 +115,11 @@ namespace Halley {
 		static String PrettyFloat(String src);
 		static String FloatToString(double value);
 		static String FloatToString(float value);
-		static String IntegerToString(int value);
+		static String IntegerToString(int value, int base=10);
 		static String PrettySize(int bytes);
 
 		// Unicode routines
-		StringUTF32 GetUTF32();
+		StringUTF32 GetUTF32() const;
 
 		// Static unicode routines
 		static size_t GetUTF8Len(const wchar_t *utf16);

@@ -80,22 +80,19 @@ void Kanji::ParseKanjidic(wxXmlNode* node)
 	wxXmlNode* child = node->GetChildren();
 	wxXmlNode* child2 = NULL;
 	while (child) {
-		String name = child->GetName();
-		if (name == _T("codepoint")) XMLParseCodepoint(child);
-		if (name == _T("misc")) XMLParseMisc(child);
-		if (name == _T("reading_meaning")) {
+		wxString name = child->GetName();
+		if (name == L"codepoint") XMLParseCodepoint(child);
+		if (name == L"misc") XMLParseMisc(child);
+		if (name == L"reading_meaning") {
 			child2 = child->GetChildren();
 			while (child2) {
-				if (child2->GetName() == _T("rmgroup"))	XMLParseRMGroup(child2);
+				if (child2->GetName() == L"rmgroup") XMLParseRMGroup(child2);
 				child2 = child2->GetNext();
 			}
 		}
 		child = child->GetNext();
 	}
 
-	onYomi.Shrink();
-	kunYomi.Shrink();
-	meanings.Shrink();
 	//wxLogMessage(wxString::Format(_T("Got %c with %i on'yomi, %i kun'yomi, grade %i, jlpt %i, frequency %i, %i strokes"),value,onYomi.size(),kunYomi.size(),grade,jlpt,rankOrderFrequency,strokeCount));
 }
 
@@ -125,7 +122,7 @@ void Kanji::XMLParseMisc(wxXmlNode* node)
 {
 	wxXmlNode* child = node->GetChildren();
 	while (child) {
-		String name = child->GetName();
+		wxString name = child->GetName();
 		if (name == _T("grade")) grade = StringToInt(child->GetNodeContent());
 		if (name == _T("stroke_count")) strokeCount = StringToInt(child->GetNodeContent());
 		if (name == _T("jlpt")) jlpt = StringToInt(child->GetNodeContent());
@@ -144,15 +141,13 @@ void Kanji::XMLParseRMGroup(wxXmlNode* node)
 			// Parse on'yomi reading
 			if (r_type == _T("ja_on")) {
 				wxString content = child->GetNodeContent();
-				content.Shrink();
-				onYomi.Add(content);
+				onYomi.push_back(String(content));
 			}
 
 			// Parse kun'yomi reading
 			if (r_type == _T("ja_kun")) {
 				wxString content = child->GetNodeContent();
-				content.Shrink();
-				kunYomi.Add(content);
+				kunYomi.push_back(String(content));
 			}
 		}
 
@@ -161,8 +156,7 @@ void Kanji::XMLParseRMGroup(wxXmlNode* node)
 			wxString m_lang = child->GetPropVal(_T("m_lang"),_T("eng"));
 			if (m_lang == _T("eng")) {
 				wxString content = child->GetNodeContent();
-				content.Shrink();
-				meanings.Add(content);
+				meanings.push_back(String(content));
 			}
 		}
 	}
@@ -170,17 +164,7 @@ void Kanji::XMLParseRMGroup(wxXmlNode* node)
 
 String Kanji::GetName() const
 {
-	if (value <= 0xFFFF) {
-		// Is in the BMP, so UTF-16 encoding is just the actual value
-		return wxString((wxChar)value);
-	} else {
-		// Encode as UTF-16
-		int temp = value - 0x10000;
-		int s1 = (temp >> 10)   + 0xD800;
-		int s2 = (temp & 0x3FF) + 0xDC00;
-
-		return wxString(wxChar(s1)) + wxChar(s2);
-	}
+	return String((UnicodeCharacter)value);
 }
 
 
@@ -204,22 +188,22 @@ StringVector Kanji::GetReadings() const
 	// Get on'yomi
 	size_t n = onYomi.size();
 	for (size_t i=0;i<n;i++) {
-		result.Add(onYomi[i]);
+		result.push_back(onYomi[i]);
 	}
 
 	// Get kun'yomi
 	n = kunYomi.size();
 	for (size_t i=0;i<n;i++) {
-		result.Add(kunYomi[i]);
+		result.push_back(kunYomi[i]);
 	}
 
 	// Get variations of on'yomi
 	n = onYomi.size();
 	for (size_t i=0;i<n;i++) {
 		StringVector variations = KanaConverter::GetPronunciationChanges(onYomi[i]);
-		size_t m = variations.Count();
+		size_t m = variations.size();
 		for (size_t j=0;j<m;j++) {
-			result.Add(variations[j]);
+			result.push_back(variations[j]);
 		}
 	}
 
@@ -227,9 +211,9 @@ StringVector Kanji::GetReadings() const
 	n = kunYomi.size();
 	for (size_t i=0;i<n;i++) {
 		StringVector variations = KanaConverter::GetPronunciationChanges(kunYomi[i]);
-		size_t m = variations.Count();
+		size_t m = variations.size();
 		for (size_t j=0;j<m;j++) {
-			result.Add(variations[j]);
+			result.push_back(variations[j]);
 		}
 	}
 

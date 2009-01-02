@@ -46,8 +46,8 @@ void Word::XMLParseKEle(wxXmlNode* node)
 		if (name == _T("keb")) {
 			wxString temp = child->GetNodeContent();
 			temp.Shrink();
-			kanjiStrings.Add(temp);
-			if (kanjiStrings.Count() == 1) kanjiString = temp;
+			kanjiStrings.push_back(String(temp));
+			if (kanjiStrings.size() == 1) kanjiString = String(temp);
 		}
 	}
 }
@@ -57,10 +57,10 @@ void Word::XMLParseREle(wxXmlNode* node)
 	for (wxXmlNode* child = node->GetChildren(); child; child = child->GetNext()) {
 		wxString name = child->GetName();
 		if (name == _T("reb")) {
-			kanaString = child->GetNodeContent();
+			kanaString = String(child->GetNodeContent());
 			kanaString.Shrink();
 			if (kanjiString.IsEmpty()) {
-				kanjiStrings.Add(kanaString);
+				kanjiStrings.push_back(kanaString);
 				kanjiString = kanaString;
 			}
 		}
@@ -78,7 +78,7 @@ WordReading Word::GetWordReading(const KanjiManager& kanjiManager) const
 {
 	if (IsValid()) {
 		try {
-			return WordReading::Parse(kanjiManager.NormalizeKanji(kanjiString),KanaConverter::KanaToKatakana(kanaString),kanjiManager);
+			return WordReading::Parse(kanjiManager.NormalizeKanji(kanjiString).GetUTF32(),KanaConverter::KanaToKatakana(kanaString).GetUTF32(),kanjiManager);
 		} catch (...) {
 			return WordReading();
 		}

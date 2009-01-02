@@ -17,9 +17,9 @@ namespace Japanese {
 		std::map<String,String> entries;
 
 		void SetKanaNames(String* names,size_t count);
-		void AddGlide(String roomajiPrefix,wxChar katakanaPrefix,String vowels);
-		bool IsVowel(wxChar letter) const;
-		bool IsFullWidthRoman(wxChar letter) const;
+		void AddGlide(String roomajiPrefix,int katakanaPrefix,String vowels);
+		bool IsVowel(int letter) const;
+		bool IsFullWidthRoman(int letter) const;
 		void AddMacrons(String &source) const;
 
 		virtual void AdjustSyllableForPrevious(String &current,const String &previous) const { (void) current; (void) previous; }

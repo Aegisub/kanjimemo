@@ -73,13 +73,13 @@ void KanaConverter::OffsetCharacterValues(String &str,int offset)
 	}
 }
 
-wxChar KanaConverter::KanaToHiragana(wxChar kana)
+wxChar KanaConverter::KanaToHiragana(UnicodeCharacter kana)
 {
 	if (IsKatakana(kana)) return kana - HIRA_TO_KATA_OFFSET;
 	return kana;
 }
 
-wxChar KanaConverter::KanaToKatakana(wxChar kana)
+wxChar KanaConverter::KanaToKatakana(UnicodeCharacter kana)
 {
 	if (IsHiragana(kana)) return kana + HIRA_TO_KATA_OFFSET;
 	return kana;
@@ -99,62 +99,63 @@ String KanaConverter::KanaToHiragana(const String str)
 
 String KanaConverter::KanaToKatakana(const String str)
 {
-	String result = str;
-	size_t n = result.Length();
+	StringUTF32 result = str.GetUTF32();
+	size_t n = result.size();
 	for (size_t i=0;i<n;i++) {
 		if (IsHiragana(result[i])) {
 			result[i] += HIRA_TO_KATA_OFFSET;
 		}
 	}
-	return result;
+	return String(result);
 }
 
-StringVector KanaConverter::GetPronunciationChanges(const String kana)
+StringVector KanaConverter::GetPronunciationChanges(const String _kana)
 {
+	StringUTF32 kana = _kana.GetUTF32();
 	StringVector result;
-	size_t len = kana.Length();
+	size_t len = kana.length();
 	if (len == 0) return result;
 
-	wxChar firstChar = kana[0];
-	wxChar lastChar = kana[len-1];
-	wxChar firstCharKata = KanaToKatakana(firstChar);
-	wxChar lastCharKata = KanaToKatakana(lastChar);
+	int firstChar = kana[0];
+	int lastChar = kana[len-1];
+	int firstCharKata = KanaToKatakana(firstChar);
+	int lastCharKata = KanaToKatakana(lastChar);
 
 	// tsu -> little tsu
 	if (lastCharKata == 0x30C4) {
-		result.Add(kana.Left(len-1) + wxChar(lastChar-1));
+		result.push_back(String(kana.substr(0,len-1) + StringUTF32(1, lastChar-1)));
 	}
 
 	// k->g, s->z, t->d
 	if (firstCharKata >= 0x30AB && firstCharKata <= 0x30C1 && firstCharKata % 2 == 1) {
-		result.Add(wxChar(firstChar+1) + kana.Mid(1));
+		result.push_back(String(StringUTF32(1, firstChar+1) + kana.substr(1)));
 	}
 
 	// t->d
 	if (firstCharKata >= 0x30C4 && firstCharKata <= 0x30C8 && firstCharKata % 2 == 0) {
-		result.Add(wxChar(firstChar+1) + kana.Mid(1));
+		result.push_back(String(StringUTF32(1, firstChar+1) + kana.substr(1)));
 	}
 
 	// h->b, h->p
 	if (firstCharKata >= 0x30CF && firstCharKata <= 0x30DD && firstCharKata % 3 == 0) {
-		result.Add(wxChar(firstChar+1) + kana.Mid(1));
-		result.Add(wxChar(firstChar+2) + kana.Mid(1));
+		result.push_back(String(StringUTF32(1, firstChar+1) + kana.substr(1)));
+		result.push_back(String(StringUTF32(1, firstChar+2) + kana.substr(1)));
 	}
 
 	return result;
 }
 
-bool KanaConverter::IsHiragana(wxChar kana)
+bool KanaConverter::IsHiragana(UnicodeCharacter kana)
 {
 	return kana >= 0x3041 && kana <= 0x3094;
 }
 
-bool KanaConverter::IsKatakana(wxChar kana)
+bool KanaConverter::IsKatakana(UnicodeCharacter kana)
 {
 	return kana >= 0x30A1 && kana <= 0x30F6;
 }
 
-bool KanaConverter::IsKana(wxChar kana)
+bool KanaConverter::IsKana(UnicodeCharacter kana)
 {
 	return IsHiragana(kana) || IsKatakana(kana);
 }
@@ -168,7 +169,7 @@ bool KanaConverter::IsKana(const String kana)
 	return true;
 }
 
-bool KanaConverter::IsSmallKana(wxChar kana)
+bool KanaConverter::IsSmallKana(UnicodeCharacter kana)
 {
 	if (IsHiragana(kana)) kana += HIRA_TO_KATA_OFFSET;
 	if (kana >= 0x30A1 && kana <= 0x30A9 && (kana % 2 == 1)) return true;

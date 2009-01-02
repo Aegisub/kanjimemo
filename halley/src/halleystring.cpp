@@ -34,8 +34,14 @@
 //
 
 #include "halleystring.h"
+#include <sstream>
 #ifdef WX_COMPAT
 #include <wx/string.h>
+#endif
+
+
+#ifdef _MSC_VER
+#pragma warning(disable: 4748)
 #endif
 
 using namespace Halley;
@@ -95,7 +101,7 @@ String::String(const wxString& wxstring)
 
 String::String(char character)
 {
-	*this = std::string(character,1);
+	*this = std::string(1,character);
 }
 
 
@@ -108,9 +114,12 @@ String::String(wchar_t character)
 }
 
 
-String::String(int integer)
+String::String(int character)
 {
-	*this = IntegerToString(integer);
+	StringUTF32 tmp;
+	tmp.append(1,character);
+	*this = String(tmp);
+	//*this = IntegerToString(integer);
 }
 
 
@@ -567,9 +576,13 @@ String String::FloatToString(double src)
 
 /////////////////
 // Int to string
-String String::IntegerToString(int value)
+String String::IntegerToString(int value, int base)
 {
-	return String(wxString::Format(_T("%i"),value));
+	std::stringstream ss;
+	if (base == 16) ss.setf(std::ios::hex, std::ios::basefield);
+	else if (base == 8) ss.setf(std::ios::oct, std::ios::basefield);
+	ss << value;
+	return ss.str();
 }
 
 
@@ -709,7 +722,7 @@ size_t String::UTF8toUTF16(const char *utf8,wchar_t *utf16)
 	throw std::exception("TODO");
 }
 
-StringUTF32 String::GetUTF32()
+StringUTF32 String::GetUTF32() const
 {
 	StringUTF32 result;
 
@@ -770,4 +783,25 @@ void String::AppendCharacter(int unicode)
 		utf32 += unicode;
 		*this += String(utf32);
 	}
+}
+
+void String::Replace(String before, String after, bool all)
+{
+	(void) all;
+
+	size_t pos = Find(before);
+	if (pos != std::string::npos) {
+		size_t len = before.length();
+		replace(pos, len, after);
+	}
+}
+
+void String::Shrink()
+{
+
+}
+
+size_t String::Find(String str) const
+{
+	return find(str);
 }

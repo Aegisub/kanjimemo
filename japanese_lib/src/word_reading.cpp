@@ -18,11 +18,11 @@ bool WordReading::IsRegular() const
 String WordReading::GetFullReading() const
 {
 	String result;
-	if (!IsRegular()) result = wxString::Format(_T("[IRREGULAR - %i]  "),irregularity);
+	if (!IsRegular()) result = String(wxString::Format(_T("[IRREGULAR - %i]  "),irregularity));
 	size_t n = readings.size();
 	for (size_t i=0;i<n;i++) {
 		if (i > 0) result += _T(",  ");
-		result += readings[i].text + _T(" = ") + readings[i].reading;
+		result += readings[i].text + " = " + readings[i].reading;
 	}
 	return result;
 }
@@ -32,14 +32,14 @@ WordReadingList WordReading::GetReadings() const
 	return readings;
 }
 
-WordReading WordReading::Parse(String kanjiString,String katakana,const KanjiManager &kanjiManager)
+WordReading WordReading::Parse(StringUTF32 kanjiString,StringUTF32 katakana,const KanjiManager &kanjiManager)
 {
 	// Stop condition
-	if (kanjiString.IsEmpty()) {
-		if (katakana.IsEmpty()) return WordReading();
+	if (kanjiString.size() == 0) {
+		if (katakana.size() == 0) return WordReading();
 		else throw WordReadingException();
 	}
-	if (katakana.IsEmpty()) throw WordReadingException();
+	if (katakana.size() == 0) throw WordReadingException();
 
 	// Get kanji if it is one
 	Kanji kanji = kanjiManager.GetKanji(kanjiString[0]);
@@ -52,16 +52,16 @@ WordReading WordReading::Parse(String kanjiString,String katakana,const KanjiMan
 		regularReadings = readings.size();
 
 		// As a fallback, add all possible katakana readings for this kanji
-		int kataLen = signed(katakana.Length()) + 1 - signed(kanjiString.Length());
+		int kataLen = signed(katakana.size()) + 1 - signed(kanjiString.size());
 		if (kataLen < 0) wxLogMessage(_T("LOLWTF?"));
 		for (int i=1;i<=kataLen;i++) {
 			// Make sure that the remaining katakana won't start with a small kana
 			if (i == kataLen || !KanaConverter::IsSmallKana(katakana[i])) {
-				readings.Add(katakana.Left(i));
+				readings.push_back(String(katakana.substr(0,i)));
 			}
 		}
 	} else {
-		readings.Add(kanjiString[0]);
+		readings.push_back(String(kanjiString[0]));
 		regularReadings = 1;
 	}
 
@@ -71,21 +71,21 @@ WordReading WordReading::Parse(String kanjiString,String katakana,const KanjiMan
 	irregular.irregularity = 9999999;
 
 	// Loop through each reading
-	size_t n = readings.Count();
-	String restOfKanji = kanjiString.Mid(1);
+	size_t n = readings.size();
+	StringUTF32 restOfKanji = kanjiString.substr(1);
 	for (size_t i=0;i<n;i++) {
-		if (ReadingMatches(readings[i],katakana,restOfKanji)) {
+		if (ReadingMatches(readings[i],String(katakana),String(restOfKanji))) {
 			// Strips the reading of okurigana and prefix/suffix marks
 			String clearReading = ClearReading(readings[i]);
 
 			// Try to get a whole reading starting with this particular reading
 			// If it fails, it'll throw an exception and discard this whole sub-tree
 			try {
-				WordReading tryReading = Parse(kanjiString.Mid(1),katakana.Mid(clearReading.Length()),kanjiManager);
+				WordReading tryReading = Parse(kanjiString.substr(1),katakana.substr(clearReading.size()),kanjiManager);
 
 				// Getting here means that the word parsed correctly from this point to the end.
 				// Prepend the current meaning to the result
-				tryReading.PrependReading(kanjiString[0],clearReading);
+				tryReading.PrependReading(String(kanjiString[0]),clearReading);
 
 				// If the current reading exceeds the number of regular readings, flag this result as irregular
 				if (i >= regularReadings) tryReading.irregularity++;
@@ -120,10 +120,10 @@ bool WordReading::ReadingMatches(String reading,String katakana,String restOfKan
 	if (katakana.StartsWith(kataReading)) return true;
 
 	// Strip out dashes
-	kataReading.Replace(_T("-"),_T(""),true);
+	kataReading.Replace("-","");
 
 	// Split okurigana
-	int pos = kataReading.Find(_T("."));
+	int pos = kataReading.Find(".");
 
 	// Found okurigana
 	if (pos != -1) {
@@ -145,8 +145,8 @@ bool WordReading::ReadingMatches(String reading,String katakana,String restOfKan
 
 String WordReading::ClearReading(String reading)
 {
-	reading.Replace(_T("-"),_T(""),true);
-	int pos = reading.Find(_T("."));
+	reading.Replace("-","",true);
+	int pos = reading.Find(".");
 	if (pos == -1) return reading;
 	return reading.Left(pos);
 }
