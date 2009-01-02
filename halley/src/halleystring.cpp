@@ -792,7 +792,7 @@ void String::Replace(String before, String after, bool all)
 	size_t pos = Find(before);
 	if (pos != std::string::npos) {
 		size_t len = before.length();
-		replace(pos, len, after);
+		*this = replace(pos, len, after);
 	}
 }
 

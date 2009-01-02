@@ -104,16 +104,17 @@ Kanji& KanjiManager::GetMutableKanji(String name)
 	return nullKanji;
 }
 
-String KanjiManager::NormalizeKanji(String kanji) const
+String KanjiManager::NormalizeKanji(String _kanji) const
 {
-	size_t len = kanji.Length();
+	StringUTF32 kanji = _kanji.GetUTF32();
+	size_t len = kanji.length();
 	for (size_t i=1; i<len; i++) {
-		wxChar curKanji = kanji[i];
+		int curKanji = kanji[i];
 
 		// Iteration mark
 		if (curKanji == 0x3005) kanji[i] = kanji[i-1];
 	}
-	return kanji;
+	return String(kanji);
 }
 
 void KanjiManager::AddWordReference(const Word &word)

@@ -81,7 +81,7 @@ WordReading WordReading::Parse(StringUTF32 kanjiString,StringUTF32 katakana,cons
 			// Try to get a whole reading starting with this particular reading
 			// If it fails, it'll throw an exception and discard this whole sub-tree
 			try {
-				WordReading tryReading = Parse(kanjiString.substr(1),katakana.substr(clearReading.size()),kanjiManager);
+				WordReading tryReading = Parse(kanjiString.substr(1),katakana.substr(clearReading.GetUTF32().size()),kanjiManager);
 
 				// Getting here means that the word parsed correctly from this point to the end.
 				// Prepend the current meaning to the result
@@ -146,8 +146,8 @@ bool WordReading::ReadingMatches(String reading,String katakana,String restOfKan
 String WordReading::ClearReading(String reading)
 {
 	reading.Replace("-","",true);
-	int pos = reading.Find(".");
-	if (pos == -1) return reading;
+	size_t pos = reading.Find(".");
+	if (pos == std::string::npos) return reading;
 	return reading.Left(pos);
 }
 
