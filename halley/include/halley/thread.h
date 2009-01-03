@@ -11,29 +11,30 @@
 
   ------------------------------------------------------
 
-  Copyright (c) 2008 - Rodrigo Braz Monteiro.
+  Copyright (c) 2009 - Rodrigo Braz Monteiro.
   This file is subject to the terms of license.txt.
 
 \*********************************************************/
 
 #pragma once
 
-// Include all public Halley headers
-#include "SDL.h"
-#include "SDL_opengl.h"
-#include "interfaces.h"
-#include "vector2d.h"
-#include "video.h"
-#include "game.h"
-#include "frame_debug.h"
-#include "polygon.h"
-#include "sprite_collection.h"
-#include "random.h"
-#include "rect.h"
-#include "draw_primitive.h"
-#include "draw_text.h"
-#include "halleystring.h"
-#include "thread.h"
+namespace Halley {
+	class Thread {
+	public:
+		void Start();
+		void Wait();
+		bool IsDone();
 
-// Macro to implement program
-#define HalleyGame(T) int main(int argc, char* argv[]) { (void) argc; (void) argv; Halley::Game::SetInstance(Halley::spGame(new T)); Halley::Game::GetInstance()->Start(); return 0; }
+		Thread();
+		virtual ~Thread();
+
+	protected:
+		virtual void Run() = 0;
+
+	private:
+		bool running;
+		SDL_Thread *thread;
+
+		static int RunThread(void *data);
+	};
+}

@@ -24,12 +24,16 @@ namespace Halley {
 
 	using std::tr1::shared_ptr;
 	using std::tr1::weak_ptr;
+	using std::tr1::dynamic_pointer_cast;
+	using std::tr1::static_pointer_cast;
 
 
 	// Forward references
 	class Frame;
 	class Sprite;
 	class InputKeyboard;
+	class Thread;
+
 
 	// Smart pointers
 	typedef shared_ptr<Frame> spFrame;
@@ -38,6 +42,8 @@ namespace Halley {
 	typedef weak_ptr<Sprite> wpSprite;
 	typedef shared_ptr<InputKeyboard> spInputKeyboard;
 	typedef weak_ptr<InputKeyboard> wpInputKeyboard;
+	typedef shared_ptr<Thread> spThread;
+	typedef weak_ptr<Thread> wpThread;
 
 
 	// FrameParent interface, used by both frames themselves and by the game core

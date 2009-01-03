@@ -1,7 +1,6 @@
 #include "kanjimemo.h"
 #include "frame_bg.h"
 #include "halley/halley.h"
-#include <fstream>
 
 
 ///////////////
@@ -22,9 +21,6 @@ void KanjiMemo::Init()
 	//Video::SetVideo(false,Vector2i(1600,1000));
 	//Video::SetVideo(false,Vector2i(1680/4,1050/4),Vector2f(1680,1050));
 	SetTopFrame(spFrame(new FrameBackground));
-
-	kanji.SerializeFrom(std::ifstream("kanji.txt"));
-	words.SerializeFrom(std::ifstream("words.txt"));
 }
 
 

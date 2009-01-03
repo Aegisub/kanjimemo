@@ -179,6 +179,14 @@
 			Name="Core"
 			>
 			<File
+				RelativePath=".\src\frame_loading.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\frame_loading.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\kanjimemo.cpp"
 				>
 			</File>

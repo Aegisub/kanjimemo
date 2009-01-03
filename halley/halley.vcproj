@@ -231,6 +231,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\thread.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\include\halley\thread.h"
+				>
+			</File>
+			<File
 				RelativePath=".\include\halley\vector2d.h"
 				>
 			</File>
