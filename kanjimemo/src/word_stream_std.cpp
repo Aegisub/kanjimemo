@@ -40,16 +40,16 @@ WordResult StandardWordStream::CheckResult(String entry)
 {
 	String curWord = GetWord();
 	String kana;
-	if (kanaConverter.IsKana(curWord))
+	if (kanaConverter.IsKana(curWord)) {
 		kana = curWord;
-	else {
+	} else {
 		Japanese::Word word = jwords.GetWord(curWord);
 		kana = word.GetKanaString();
 	}
-	Japanese::String reading = kanaConverter.KanaToRoomaji(kana);
+	String reading = kanaConverter.KanaToRoomaji(kana);
 
 	WordResult res;
 	res.success = reading == entry;
-	res.correctReading = String(reading.c_str());
+	res.correctReading = reading;
 	return res;
 }

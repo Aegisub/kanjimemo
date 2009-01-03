@@ -16,8 +16,8 @@ namespace Japanese {
 		String RoomajiToKatakana(const String roomaji) const;
 		String RoomajiToHiragana(const String roomaji) const;
 
-		static wxChar KanaToHiragana(UnicodeCharacter kana);
-		static wxChar KanaToKatakana(UnicodeCharacter kana);
+		static UnicodeCharacter KanaToHiragana(UnicodeCharacter kana);
+		static UnicodeCharacter KanaToKatakana(UnicodeCharacter kana);
 
 		static String KanaToHiragana(const String kana);
 		static String KanaToKatakana(const String kana);

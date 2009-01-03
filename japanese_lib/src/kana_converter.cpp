@@ -65,21 +65,23 @@ String KanaConverter::KatakanaToHiragana(const String katakana)
 	return result;
 }
 
-void KanaConverter::OffsetCharacterValues(String &str,int offset)
+void KanaConverter::OffsetCharacterValues(String &_str,int offset)
 {
-	size_t n = str.Length();
+	StringUTF32 str = _str.GetUTF32();
+	size_t n = str.length();
 	for (size_t i=0; i<n; i++) {
 		str[i] += offset;
 	}
+	_str = String(str);
 }
 
-wxChar KanaConverter::KanaToHiragana(UnicodeCharacter kana)
+UnicodeCharacter KanaConverter::KanaToHiragana(UnicodeCharacter kana)
 {
 	if (IsKatakana(kana)) return kana - HIRA_TO_KATA_OFFSET;
 	return kana;
 }
 
-wxChar KanaConverter::KanaToKatakana(UnicodeCharacter kana)
+UnicodeCharacter KanaConverter::KanaToKatakana(UnicodeCharacter kana)
 {
 	if (IsHiragana(kana)) return kana + HIRA_TO_KATA_OFFSET;
 	return kana;
@@ -87,14 +89,14 @@ wxChar KanaConverter::KanaToKatakana(UnicodeCharacter kana)
 
 String KanaConverter::KanaToHiragana(const String str)
 {
-	String result = str;
-	size_t n = result.Length();
+	StringUTF32 result = str.GetUTF32();
+	size_t n = result.length();
 	for (size_t i=0;i<n;i++) {
 		if (IsKatakana(result[i])) {
 			result[i] -= HIRA_TO_KATA_OFFSET;
 		}
 	}
-	return result;
+	return String(result);
 }
 
 String KanaConverter::KanaToKatakana(const String str)
@@ -160,9 +162,10 @@ bool KanaConverter::IsKana(UnicodeCharacter kana)
 	return IsHiragana(kana) || IsKatakana(kana);
 }
 
-bool KanaConverter::IsKana(const String kana)
+bool KanaConverter::IsKana(const String _kana)
 {
-	size_t len = kana.Length();
+	StringUTF32 kana = _kana.GetUTF32();
+	size_t len = kana.length();
 	for (size_t i=0; i<len; i++) {
 		if (!IsKana(kana[i])) return false;
 	}
