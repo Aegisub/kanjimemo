@@ -21,6 +21,7 @@
 
 #include <vector>
 #include <string>
+#include <boost/serialization/serialization.hpp>
 
 #define WX_COMPAT
 #ifdef WX_COMPAT
@@ -34,12 +35,6 @@ namespace Halley {
 
 	// String class
 	class String : public std::basic_string<Character> {
-	private:
-		Character* GetCharPointer(size_t pos);
-		static size_t UTF8toUTF16(const char *utf8,wchar_t *utf16);
-		static size_t UTF16toUTF8(const wchar_t *utf16,char *utf8);
-		static size_t UTF32toUTF8(const int *utf32,char *utf8);
-
 	public:
 
 		String();
@@ -133,6 +128,23 @@ namespace Halley {
 		String operator += (const double &p);
 		String operator += (const int &p);
 		String operator += (const Character &p);
+
+
+	private:
+		Character* GetCharPointer(size_t pos);
+		static size_t UTF8toUTF16(const char *utf8,wchar_t *utf16);
+		static size_t UTF16toUTF8(const wchar_t *utf16,char *utf8);
+		static size_t UTF32toUTF8(const int *utf32,char *utf8);
+
+		// Boost serialization
+		friend class boost::serialization::access;
+		template <class Archive>
+		void serialize(Archive &ar, const unsigned int version)
+		{
+			(void) version;
+			std::basic_string<Character> &me = *this;
+			ar & me;
+		}
 	};
 
 	void operator <<(double &p1,String &p2);

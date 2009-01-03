@@ -1,3 +1,5 @@
+#include <wx/wfstream.h>
+#include <wx/zipstrm.h>
 #include "word_manager.h"
 using namespace Japanese;
 
@@ -12,6 +14,19 @@ void WordManager::LoadFromJMDict(wxInputStream &file)
 			}
 		}
 	}
+}
+
+void WordManager::LoadFromJMDict(std::string filename)
+{
+	wxFileInputStream input(wxString(filename.c_str(),wxConvUTF8));
+	wxBufferedInputStream buffer(input);
+	wxZipInputStream zip(buffer);
+	wxZipEntry *entry = zip.GetNextEntry();
+	if (entry) {
+		LoadFromJMDict(zip);
+		delete entry;
+	}
+	zip.CloseEntry();
 }
 
 void WordManager::AddWord(wxXmlNode* node)
@@ -45,4 +60,29 @@ const Word& WordManager::GetWord(String name) const
 const std::list<String>& WordManager::GetWordList() const
 {
 	return wordList;
+}
+
+
+///////////////////////////////////////////////////////////////////////////
+// Serialization
+
+#pragma warning(disable: 4099)
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/serialization/serialization.hpp>
+#include <boost/serialization/map.hpp>
+#include <boost/serialization/string.hpp>
+#include <boost/serialization/vector.hpp>
+#include <boost/serialization/list.hpp>
+
+void WordManager::SerializeFrom(std::ifstream &input)
+{
+	boost::archive::text_iarchive ia(input);
+	ia >> *this;
+}
+
+void WordManager::SerializeTo(std::ofstream &output)
+{
+	boost::archive::text_oarchive oa(output);
+	oa << *this;
 }

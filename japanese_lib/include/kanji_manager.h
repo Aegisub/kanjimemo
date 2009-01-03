@@ -1,7 +1,9 @@
 
 #pragma once
 
-#include <set>
+#include <fstream>
+#include <map>
+#include <boost/serialization/serialization.hpp>
 #include "libstring.h"
 #include "kanji.h"
 
@@ -15,6 +17,10 @@ namespace Japanese {
 
 		void LoadFromKanjidic(wxInputStream &file);		// Loads data from KANJIDIC
 		void LoadFromKanjidic2(wxInputStream &file);	// Loads data from KANJIDIC2 (XML)
+		void LoadFromKanjidic2(std::string filename);
+
+		void SerializeFrom(std::ifstream &input);
+		void SerializeTo(std::ofstream &output);
 
 		const Kanji& GetKanji(String name) const;		// Gets a Kanji if it exists, nullKanji otherwise
 		const Kanji& GetKanji(int unicodeValue) const;	// Gets a Kanji if it exists, nullKanji otherwise
@@ -36,6 +42,20 @@ namespace Japanese {
 		int minCodePointSIP;
 		int maxCodePointSIP;
 		size_t numSurrogate;
+
+		// Boost serialization
+		friend class boost::serialization::access;
+		template <class Archive>
+		void serialize(Archive &ar, const unsigned int version)
+		{
+			(void) version;
+			ar & kanji;
+			ar & minCodePointBMP;
+			ar & maxCodePointBMP;
+			ar & minCodePointSIP;
+			ar & maxCodePointSIP;
+			ar & numSurrogate;
+		}
 	};
 
 }

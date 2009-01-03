@@ -3,6 +3,7 @@
 
 #include "libstring.h"
 #include <wx/xml/xml.h>
+#include <boost/serialization/serialization.hpp>
 
 namespace Japanese {
 	class KanjiManager;
@@ -33,5 +34,17 @@ namespace Japanese {
 		void XMLParseKEle(wxXmlNode* node);
 		void XMLParseREle(wxXmlNode* node);
 		void XMLParseSense(wxXmlNode* node);
+
+		// Boost serialization
+		friend class boost::serialization::access;
+		template <class Archive>
+		void serialize(Archive &ar, const unsigned int version)
+		{
+			(void) version;
+			ar & kanjiString;
+			ar & kanjiStrings;
+			ar & kanaString;
+			ar & meanings;
+		}
 	};
 }

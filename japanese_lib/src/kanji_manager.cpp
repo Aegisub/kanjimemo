@@ -1,4 +1,6 @@
 #include <wx/txtstrm.h>
+#include <wx/wfstream.h>
+#include <wx/zipstrm.h>
 #include "kanji_manager.h"
 #include "word_reading.h"
 #include "word.h"
@@ -52,6 +54,19 @@ void KanjiManager::LoadFromKanjidic2(wxInputStream &file)
 	}
 
 	//wxLogMessage(wxString::Format(_T("Got %i BMP kanji from U+%04X to U+%04X, and %i SIP kanji from U+%04X to U+%04X"),kanji.size()-numSurrogate,minCodePointBMP,maxCodePointBMP,numSurrogate,minCodePointSIP,maxCodePointSIP));
+}
+
+void KanjiManager::LoadFromKanjidic2(std::string filename)
+{
+	wxFileInputStream input(wxString(filename.c_str(),wxConvUTF8));
+	wxBufferedInputStream buffer(input);
+	wxZipInputStream zip(buffer);
+	wxZipEntry *entry = zip.GetNextEntry();
+	if (entry) {
+		LoadFromKanjidic2(zip);
+		delete entry;
+	}
+	zip.CloseEntry();
 }
 
 
@@ -129,4 +144,30 @@ void KanjiManager::AddWordReference(const Word &word)
 			kanji.AddWordReference(word.GetKanjiString(),frag.reading,reading.IsRegular());
 		}
 	}
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////
+// Serialization
+
+#pragma warning(disable: 4099)
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/serialization/serialization.hpp>
+#include <boost/serialization/map.hpp>
+#include <boost/serialization/string.hpp>
+#include <boost/serialization/vector.hpp>
+#include <boost/serialization/list.hpp>
+
+void Japanese::KanjiManager::SerializeFrom(std::ifstream &input)
+{
+	boost::archive::text_iarchive ia(input);
+	ia >> *this;
+}
+
+void Japanese::KanjiManager::SerializeTo(std::ofstream &output)
+{
+	boost::archive::text_oarchive oa(output);
+	oa << *this;
 }

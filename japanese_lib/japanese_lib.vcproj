@@ -176,6 +176,10 @@
 					/>
 				</FileConfiguration>
 			</File>
+			<File
+				RelativePath=".\include\prec.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Kanji"
@@ -234,10 +238,6 @@
 			</File>
 			<File
 				RelativePath=".\include\libstring.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\prec.h"
 				>
 			</File>
 			<File

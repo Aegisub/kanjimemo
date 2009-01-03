@@ -4,6 +4,7 @@
 #include "libstring.h"
 #include <wx/regex.h>
 #include <wx/xml/xml.h>
+#include <boost/serialization/serialization.hpp>
 
 namespace Japanese {
 	class Kanji {
@@ -46,5 +47,22 @@ namespace Japanese {
 		void XMLParseCodepoint(wxXmlNode* node);
 		void XMLParseMisc(wxXmlNode* node);
 		void XMLParseRMGroup(wxXmlNode* node);
+
+
+		// Boost serialization
+		friend class boost::serialization::access;
+		template <class Archive>
+		void serialize(Archive &ar, const unsigned int version)
+		{
+			(void) version;
+			ar & value;
+			ar & rankOrderFrequency;
+			ar & grade;
+			ar & jlpt;
+			ar & strokeCount;
+			ar & onYomi;
+			ar & kunYomi;
+			ar & meanings;
+		}
 	};
 }
