@@ -21,7 +21,7 @@ void FrameStandardGame::Init()
 	kb = GetKeyboard(true);
 
 	spKanjiMemo game = std::tr1::dynamic_pointer_cast<KanjiMemo>(Game::GetInstance());
-	spGlyphSet glyphs(new GlyphSet("katakana"));
+	spGlyphSet glyphs(new GlyphSet("hiragana"));
 	spPlayerProgress progress(new PlayerProgress());
 	words = spWordStream(new StandardWordStream(game, glyphs, progress));
 }
