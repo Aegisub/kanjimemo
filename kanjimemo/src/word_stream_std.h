@@ -21,9 +21,11 @@ private:
 	size_t maxHistory;
 	spGlyphSet glyphs;
 	spPlayerProgress progress;
+	Halley::Random random;
 
 	Japanese::KanaConverter &kanaConverter;
 	Japanese::KanjiManager &kanji;
 	Japanese::WordManager &jwords;
 
+	Halley::String GetNewWord();
 };

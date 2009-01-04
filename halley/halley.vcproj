@@ -107,7 +107,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				FavorSizeOrSpeed="1"
+				FavorSizeOrSpeed="0"
 				AdditionalIncludeDirectories="include/halley"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
@@ -228,6 +228,14 @@
 			</File>
 			<File
 				RelativePath=".\include\halley\rect.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\text_reader.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\include\halley\text_reader.h"
 				>
 			</File>
 			<File

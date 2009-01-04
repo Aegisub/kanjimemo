@@ -34,6 +34,7 @@
 #include "draw_text.h"
 #include "halleystring.h"
 #include "thread.h"
+#include "text_reader.h"
 
 // Macro to implement program
 #define HalleyGame(T) int main(int argc, char* argv[]) { \
@@ -43,3 +44,8 @@
 	Halley::Game::GetInstance()->Start(args); \
 	return 0; \
 }
+
+#ifdef _MSC_VER
+#pragma warning (disable: 4996)
+#pragma warning (disable: 4748)
+#endif

@@ -12,12 +12,9 @@ StandardWordStream::StandardWordStream(spKanjiMemo game, spGlyphSet _glyphs, spP
 	pos = 0;
 	maxHistory = 2;
 
-	words.push_back(String(L"日本語"));
-	words.push_back(String(L"あ"));
-	words.push_back(String(L"ア"));
-	words.push_back(String(L"カタカナ"));
-	words.push_back(String(L"ひらがな"));
-	words.push_back(String(L"東京"));
+	for (size_t i=0; i<5; i++) {
+		words.push_back(GetNewWord());
+	}
 }
 
 String StandardWordStream::GetWord(int offset)
@@ -31,8 +28,7 @@ void StandardWordStream::Next()
 {
 	pos++;
 	if (pos > maxHistory) {
-		// TODO: remove this
-		words.push_back(words.front());
+		words.push_back(GetNewWord());
 
 		pos--;
 		words.pop_front();
@@ -55,4 +51,11 @@ WordResult StandardWordStream::CheckResult(String entry)
 	res.success = reading == entry;
 	res.correctReading = reading;
 	return res;
+}
+
+String StandardWordStream::GetNewWord()
+{
+	int nGroups = glyphs->GetNumberGroups();
+	Halley::StringArray group = glyphs->GetGroup(random.Get(0, nGroups));
+	return group[random.Get(0, (int) group.size())];
 }
