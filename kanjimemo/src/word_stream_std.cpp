@@ -2,10 +2,12 @@
 
 using Halley::String;
 
-StandardWordStream::StandardWordStream(Halley::shared_ptr<KanjiMemo> game)
+StandardWordStream::StandardWordStream(spKanjiMemo game, spGlyphSet _glyphs, spPlayerProgress _progress)
 : kanaConverter(game->kanaConverter),
   kanji(game->kanji),
-  jwords(game->words)
+  jwords(game->words),
+  glyphs(_glyphs),
+  progress(_progress)
 {
 	pos = 0;
 	maxHistory = 2;

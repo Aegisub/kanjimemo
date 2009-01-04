@@ -20,7 +20,10 @@ void FrameStandardGame::Init()
 	curInput = "";
 	kb = GetKeyboard(true);
 
-	words = spWordStream(new StandardWordStream(std::tr1::dynamic_pointer_cast<KanjiMemo>(Game::GetInstance())));
+	spKanjiMemo game = std::tr1::dynamic_pointer_cast<KanjiMemo>(Game::GetInstance());
+	spGlyphSet glyphs(new GlyphSet("katakana"));
+	spPlayerProgress progress(new PlayerProgress());
+	words = spWordStream(new StandardWordStream(game, glyphs, progress));
 }
 
 

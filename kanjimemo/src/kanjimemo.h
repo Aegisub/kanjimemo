@@ -13,3 +13,5 @@ public:
 
 	KanjiMemo();
 };
+
+typedef Halley::shared_ptr<KanjiMemo> spKanjiMemo;
