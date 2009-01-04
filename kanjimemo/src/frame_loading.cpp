@@ -22,9 +22,9 @@ void FrameLoading::DoRender()
 {
 	using namespace Halley;
 	spTextDrawer f = TextDrawer::GetDrawer("Verdana",50);
-	f->Print("Loading...", Vector2f(800,500), Vector2f(0.5f, 0.5f));
 	f->SetColour(Colour(1,1,1));
 	f->SetBorder(Colour(),5);
+	f->Print("Loading...", Vector2f(800,500), Vector2f(0.5f, 0.5f));
 }
 
 void FrameLoading::Init()

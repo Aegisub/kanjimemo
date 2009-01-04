@@ -67,6 +67,17 @@ void FrameStandardGame::DoRender()
 	f = font;
 	f->SetColour(Colour(1,1,1));
 	f->SetBorder(Colour(),3);
-	f->Print(curInput+"_", Vector2f(800, 100), Vector2f(0.5f, 0));
+	f->Print(GetNormalizedInput()+"_", Vector2f(800, 100), Vector2f(0.5f, 0));
 }
 
+String FrameStandardGame::GetNormalizedInput()
+{
+	String input = curInput.AsciiLower();
+	input.Replace("aa",String(257));
+	input.Replace("ee",String(275));
+	//input.Replace("ii",String(299));
+	input.Replace("oo",String(333));
+	input.Replace("ou",String(333));
+	input.Replace("uu",String(363));
+	return input;
+}

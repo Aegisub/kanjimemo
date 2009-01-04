@@ -80,13 +80,13 @@ bool RoomajiHepburn::AdjustSyllableForNext(String &current,const String &next) c
 			}
 		} else {
 			if (nextChar == '-') {
-				AddMacrons(current);
+				Macronize(current);
 				return false;
 			}
 
 			if (nextChar == lastChar || (lastChar == 'o' && nextChar == 'u')) {
 				if (lastChar == 'a' || lastChar == 'o' || lastChar == 'u') {
-					AddMacrons(current);
+					Macronize(current);
 					return false;
 				}
 			}

@@ -20,7 +20,7 @@ namespace Japanese {
 		void AddGlide(String roomajiPrefix,int katakanaPrefix,String vowels);
 		bool IsVowel(int letter) const;
 		bool IsFullWidthRoman(int letter) const;
-		void AddMacrons(String &source) const;
+		static void Macronize(String &source);
 
 		virtual void AdjustSyllableForPrevious(String &current,const String &previous) const { (void) current; (void) previous; }
 		// Return 'true' if you want to process the next syllable; 'false' to skip it

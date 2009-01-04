@@ -15,6 +15,7 @@ StandardWordStream::StandardWordStream(Halley::shared_ptr<KanjiMemo> game)
 	words.push_back(String(L"ア"));
 	words.push_back(String(L"カタカナ"));
 	words.push_back(String(L"ひらがな"));
+	words.push_back(String(L"東京"));
 }
 
 String StandardWordStream::GetWord(int offset)

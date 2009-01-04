@@ -142,7 +142,7 @@ bool Roomaji::IsFullWidthRoman(int letter) const
 	return letter >= 0xFF00 && letter <= 0xFF5E;
 }
 
-void Roomaji::AddMacrons(String &src) const
+void Roomaji::Macronize(String &src)
 {
 	StringUTF32 source = src.GetUTF32();
 	size_t len = source.size();

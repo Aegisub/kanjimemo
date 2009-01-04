@@ -11,6 +11,8 @@ private:
 
 	Halley::String curInput;
 
+	Halley::String GetNormalizedInput();
+
 protected:
 	void DoUpdate(float time);
 	void DoRender();

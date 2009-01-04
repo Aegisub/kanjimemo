@@ -792,7 +792,10 @@ void String::Replace(String before, String after, bool all)
 	size_t pos = Find(before);
 	if (pos != std::string::npos) {
 		size_t len = before.length();
-		*this = replace(pos, len, after);
+		String post = substr(pos+len);
+		if (all) post.Replace(before, after, true);
+
+		*this = substr(0,pos) + after + post;
 	}
 }
 
