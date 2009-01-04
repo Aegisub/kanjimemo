@@ -35,8 +35,8 @@ void FrameLoading::Init()
 	public:
 		LoadingThread(shared_ptr<KanjiMemo> _game) : game(_game) {}
 		void Run() {
-			game->kanji.SerializeFrom(std::ifstream("kanji.txt"));
-			game->words.SerializeFrom(std::ifstream("words.txt"));
+			game->kanji.SerializeFrom(std::ifstream((Game::GetProgramPath()+"data/kanji.txt").c_str()));
+			game->words.SerializeFrom(std::ifstream((Game::GetProgramPath()+"data/words.txt").c_str()));
 		}
 	};
 

@@ -36,4 +36,10 @@
 #include "thread.h"
 
 // Macro to implement program
-#define HalleyGame(T) int main(int argc, char* argv[]) { (void) argc; (void) argv; Halley::Game::SetInstance(Halley::spGame(new T)); Halley::Game::GetInstance()->Start(); return 0; }
+#define HalleyGame(T) int main(int argc, char* argv[]) { \
+	Halley::StringArray args; \
+	for (int i=0; i<argc; i++) args.push_back(argv[i]); \
+	Halley::Game::SetInstance(Halley::spGame(new T)); \
+	Halley::Game::GetInstance()->Start(args); \
+	return 0; \
+}

@@ -41,8 +41,9 @@ void FrameStandardGame::DoUpdate(float time)
 	while (int letter = kb->GetNextLetter()) {
 		// Enter pressed
 		if (letter == '\r') {
-			WordResult result = words->CheckResult(curInput);
+			WordResult result = words->CheckResult(GetNormalizedInput());
 			if (result.success) words->Next();
+			kanjiFonts[0]->Clear();
 
 			curInput.clear();
 		}

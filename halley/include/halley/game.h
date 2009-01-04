@@ -36,10 +36,12 @@ namespace Halley {
 		String name;
 		spFrame topFrame;
 		InputKeyboard keyboard;
+		String programPath;
 
 		void Exit();
 		void ChildFrameChange(spFrame from,spFrame to);
 		spInputKeyboard CreateKeyboard(bool exclusive);
+		void ParseProgramPath(String path);
 
 		void Run();
 		void PollEvents();
@@ -55,9 +57,10 @@ namespace Halley {
 		Game(String gameName);
 		virtual ~Game();
 
-		void Start();
+		void Start(StringArray args);
 
 		static spGame GetInstance();
 		static void SetInstance(spGame game);
+		static String GetProgramPath();
 	};
 }

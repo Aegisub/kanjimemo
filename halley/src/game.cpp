@@ -43,8 +43,12 @@ Game::~Game()
 
 /////////
 // Start
-void Game::Start()
+void Game::Start(StringArray args)
 {
+	// Parse program path
+	if (args.size() > 0)
+		ParseProgramPath(args[0]);
+
 	// Initialize SDL
 	int result;
 	result = SDL_Init(SDL_INIT_EVERYTHING);
@@ -197,12 +201,39 @@ void Game::PollEvents()
 	}
 }
 
+
+/////////////////////
+// Create a keyboard
 spInputKeyboard Game::CreateKeyboard(bool exclusive)
 {
 	return keyboard.CreateChild(exclusive);
 }
 
-void Halley::Game::Exit()
+
+/////////////////
+// Exit the game
+void Game::Exit()
 {
 	run = false;
+}
+
+
+////////////////////////////
+// Parses the program path
+void Game::ParseProgramPath(String path)
+{
+	size_t len = path.Length();
+	size_t last = 0;
+	for (size_t i=0; i<len; i++) {
+		if (path[i] == '/' || path[i] == '\\') last = i+1;
+	}
+	programPath = path.Left(last);
+}
+
+
+//////////////////////////////////////////
+// Get the program path from the instance
+String Game::GetProgramPath()
+{
+	return GetInstance()->programPath;
 }
