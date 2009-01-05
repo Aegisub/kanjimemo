@@ -38,7 +38,7 @@ size_t GlyphSet::GetNumberGroups() const
 	return groups.size();
 }
 
-const StringArray& GlyphSet::GetGroup(size_t n) const
+const GlyphGroup& GlyphSet::GetGroup(size_t n) const
 {
 	return groups[n];
 }
@@ -52,15 +52,23 @@ void GlyphSet::AddGroup(String data)
 	// Create stream and extract data from it
 	std::stringstream ss(data);
 	std::string tmp;
-	StringArray group;
+	GlyphGroup group;
 
 	while (ss >> tmp) {
 		if (tmp.size() > 0) {
-			group.push_back(tmp);
+			GlyphGroup g = GetReadings(tmp);
+			group.insert(group.end(), g.begin(), g.end());
 		}
 	}
 
 	if (group.size() > 0) {
 		groups.push_back(group);
 	}
+}
+
+GlyphGroup GlyphSet::GetReadings(Halley::String glyph)
+{
+	GlyphGroup result;
+	result.push_back(GlyphReading(glyph));
+	return result;
 }

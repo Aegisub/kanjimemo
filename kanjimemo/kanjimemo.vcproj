@@ -255,11 +255,19 @@
 			Name="Kanji"
 			>
 			<File
+				RelativePath=".\src\glyph_reading.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\glyph_set.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\src\glyph_set.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\player_progress.cpp"
 				>
 			</File>
 			<File

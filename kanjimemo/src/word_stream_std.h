@@ -28,4 +28,5 @@ private:
 	Japanese::WordManager &jwords;
 
 	Halley::String GetNewWord();
+	int ComputeOdds(float completion);
 };
