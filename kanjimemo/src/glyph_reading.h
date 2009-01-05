@@ -10,6 +10,9 @@ public:
 	Halley::String GetGlyph() { return glyph; }
 	Halley::String GetReading() { return reading; }
 
+	bool operator==(const GlyphReading& p) const { return glyph == p.glyph && reading == p.reading; }
+	bool operator<(const GlyphReading& p) const { return glyph+reading < p.glyph+p.reading; }
+
 private:
 	Halley::String glyph;
 	Halley::String reading;

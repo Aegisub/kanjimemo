@@ -47,6 +47,7 @@ WordReading WordReading::Parse(StringUTF32 kanjiString,StringUTF32 katakana,cons
 	// Fill readings
 	size_t regularReadings = 0;
 	StringVector readings;
+	size_t kanjiLen = 1;
 	if (kanji.IsValid()) {
 		readings = kanji.GetReadings();
 		regularReadings = readings.size();
@@ -61,7 +62,12 @@ WordReading WordReading::Parse(StringUTF32 kanjiString,StringUTF32 katakana,cons
 			}
 		}
 	} else {
-		readings.push_back(String(kanjiString[0]));
+		if (kanjiString.length() > 0 && KanaConverter::IsSmallKana(kanjiString[1])) {
+			readings.push_back(String(kanjiString.substr(0,2)));
+			kanjiLen = 2;
+		} else {
+			readings.push_back(String(kanjiString[0]));
+		}
 		regularReadings = 1;
 	}
 
@@ -72,7 +78,7 @@ WordReading WordReading::Parse(StringUTF32 kanjiString,StringUTF32 katakana,cons
 
 	// Loop through each reading
 	size_t n = readings.size();
-	StringUTF32 restOfKanji = kanjiString.substr(1);
+	StringUTF32 restOfKanji = kanjiString.substr(kanjiLen);
 	for (size_t i=0;i<n;i++) {
 		if (ReadingMatches(readings[i],String(katakana),String(restOfKanji))) {
 			// Strips the reading of okurigana and prefix/suffix marks
@@ -81,11 +87,11 @@ WordReading WordReading::Parse(StringUTF32 kanjiString,StringUTF32 katakana,cons
 			// Try to get a whole reading starting with this particular reading
 			// If it fails, it'll throw an exception and discard this whole sub-tree
 			try {
-				WordReading tryReading = Parse(kanjiString.substr(1),katakana.substr(clearReading.GetUTF32().size()),kanjiManager);
+				WordReading tryReading = Parse(kanjiString.substr(kanjiLen),katakana.substr(clearReading.GetUTF32().size()),kanjiManager);
 
 				// Getting here means that the word parsed correctly from this point to the end.
 				// Prepend the current meaning to the result
-				tryReading.PrependReading(String(kanjiString[0]),clearReading);
+				tryReading.PrependReading(String(kanjiString.substr(0,kanjiLen)),clearReading);
 
 				// If the current reading exceeds the number of regular readings, flag this result as irregular
 				if (i >= regularReadings) tryReading.irregularity++;

@@ -801,7 +801,7 @@ void String::Replace(String before, String after, bool all)
 
 void String::Shrink()
 {
-
+	reserve(length());
 }
 
 size_t String::Find(String str) const

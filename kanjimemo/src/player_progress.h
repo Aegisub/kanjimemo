@@ -8,6 +8,9 @@ public:
 	void GotReadingWrong(Halley::String word, Halley::String reading);
 
 	float GetProgress(GlyphReading glyph);
+
+private:
+	std::map<GlyphReading, float> progress;
 };
 
 typedef Halley::shared_ptr<PlayerProgress> spPlayerProgress;
