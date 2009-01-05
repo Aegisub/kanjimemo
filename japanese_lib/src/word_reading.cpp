@@ -48,13 +48,15 @@ WordReading WordReading::Parse(StringUTF32 kanjiString,StringUTF32 katakana,cons
 	size_t regularReadings = 0;
 	StringVector readings;
 	size_t kanjiLen = 1;
+
+	// Check if this kanji is actually known
 	if (kanji.IsValid()) {
 		readings = kanji.GetReadings();
 		regularReadings = readings.size();
 
 		// As a fallback, add all possible katakana readings for this kanji
 		int kataLen = signed(katakana.size()) + 1 - signed(kanjiString.size());
-		if (kataLen < 0) wxLogMessage(_T("LOLWTF?"));
+		if (kataLen < 0) throw std::exception("wtf?");
 		for (int i=1;i<=kataLen;i++) {
 			// Make sure that the remaining katakana won't start with a small kana
 			if (i == kataLen || !KanaConverter::IsSmallKana(katakana[i])) {
@@ -62,7 +64,9 @@ WordReading WordReading::Parse(StringUTF32 kanjiString,StringUTF32 katakana,cons
 			}
 		}
 	} else {
+		// This probably means that the "kanji" is actually a kana.
 		if (kanjiString.length() > 0 && KanaConverter::IsSmallKana(kanjiString[1])) {
+			// If it's a glide, take TWO characters
 			readings.push_back(String(kanjiString.substr(0,2)));
 			kanjiLen = 2;
 		} else {

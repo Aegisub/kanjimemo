@@ -14,6 +14,14 @@ Word::Word(wxXmlNode* node)
 	ParseJMDict(node);
 }
 
+
+Word::Word(String kanji, String kana)
+{
+	kanjiString = kanji;
+	kanjiStrings.push_back(kanji);
+	kanaString = kana;
+}
+
 bool Word::IsValid() const
 {
 	return (!kanjiString.IsEmpty());

@@ -13,8 +13,9 @@ namespace Japanese {
 	public:
 		Word();								// Constructs an invalid word
 		Word(wxXmlNode* node);				// Calls ParseJMDict()
-		void ParseJMDict(wxXmlNode* node);	// Parse a line from JMDict
+		Word(String kanji, String kana);
 
+		void ParseJMDict(wxXmlNode* node);	// Parse a line from JMDict
 		bool IsValid() const;			// Checks if this is a valid word
 
 		void SetKanjiString(String str);
