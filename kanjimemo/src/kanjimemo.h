@@ -5,6 +5,7 @@ class KanjiMemo : public Halley::Game {
 protected:
 	void Init();
 	void DeInit();
+	Halley::spFrame CreateFrame(Halley::String frame);
 
 public:
 	Japanese::KanaConverter kanaConverter;

@@ -57,14 +57,17 @@ namespace Halley {
 		virtual void DoUpdate(float time)=0;
 		virtual void DoRender()=0;
 
+		void AddChild(spFrame child);
+		void AddChild(String child);
 		void Switch(spFrame to);
+		void Switch(String to);
+
 		void Die();
 		void Exit();
-		void AddChild(spFrame child);
 		spInputKeyboard GetKeyboard(bool exclusive);
 
 	public:
-		Frame(String name);
+		explicit Frame(String name);
 		virtual ~Frame();
 	};
 

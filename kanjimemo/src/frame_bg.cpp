@@ -1,6 +1,5 @@
 ﻿#include "halley/halley.h"
 #include "frame_bg.h"
-#include "frame_loading.h"
 #include "sprite_bg_decor.h"
 
 
@@ -27,7 +26,7 @@ void FrameBackground::Init()
 		sprites.push_back(spSprite(new SpriteBgDecor(pos,area)));
 	}
 
-	AddChild(spFrame(new FrameLoading()));
+	AddChild("loading");
 }
 
 

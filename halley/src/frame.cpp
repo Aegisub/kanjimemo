@@ -18,6 +18,7 @@
 
 #include "frame.h"
 #include "input_keyboard.h"
+#include "game.h"
 #include <algorithm>
 using namespace Halley;
 
@@ -44,6 +45,14 @@ void Frame::Switch(spFrame to)
 {
 	Destroy(to);
 	if (to) to->TryInit();
+}
+
+
+/////////////////////////////////////
+// Switch to another frame (by name)
+void Frame::Switch(String to)
+{
+	Switch(Game::GetInstance()->CreateFrame(to));
 }
 
 
@@ -83,6 +92,14 @@ void Frame::AddChild(spFrame child)
 			child->TryInit();
 		}
 	}
+}
+
+
+/////////////////////////////
+// Add a child frame by name
+void Frame::AddChild(String child)
+{
+	AddChild(Game::GetInstance()->CreateFrame(child));
 }
 
 

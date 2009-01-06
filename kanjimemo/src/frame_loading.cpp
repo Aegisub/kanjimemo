@@ -1,5 +1,4 @@
 #include "frame_loading.h"
-#include "frame_stdgame.h"
 #include "kanjimemo.h"
 #include "halley/halley.h"
 #include <fstream>
@@ -14,7 +13,7 @@ FrameLoading::FrameLoading()
 void FrameLoading::DoUpdate(float time)
 {
 	if (load->IsDone()) {
-		Switch(Halley::spFrame(new FrameStandardGame()));
+		Switch("standard_game");
 	}
 }
 

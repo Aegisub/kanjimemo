@@ -1,6 +1,8 @@
 #include "kanjimemo.h"
 #include "frame_bg.h"
 #include "halley/halley.h"
+#include "frame_loading.h"
+#include "frame_stdgame.h"
 
 
 ///////////////
@@ -20,7 +22,7 @@ void KanjiMemo::Init()
 	//Video::SetVideo(true,Vector2i(1680,1050),Vector2f(1600,1000));
 	//Video::SetVideo(false,Vector2i(1600,1000));
 	//Video::SetVideo(false,Vector2i(1680/4,1050/4),Vector2f(1680,1050));
-	SetTopFrame(spFrame(new FrameBackground));
+	SetTopFrame(CreateFrame("background"));
 }
 
 
@@ -29,6 +31,19 @@ void KanjiMemo::Init()
 void KanjiMemo::DeInit()
 {
 
+}
+
+
+//////////////////
+// Create a frame
+Halley::spFrame KanjiMemo::CreateFrame(Halley::String frame)
+{
+	using Halley::spFrame;
+	if (frame == "background") return spFrame(new FrameBackground());
+	if (frame == "loading") return spFrame(new FrameLoading());
+	if (frame == "standard_game") return spFrame(new FrameStandardGame());
+
+	throw std::exception("Unknown frame.");
 }
 
 

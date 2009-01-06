@@ -28,6 +28,8 @@ namespace Halley {
 	typedef weak_ptr<Game> wpGame;
 
 	class Game : public IFrameParent {
+		friend class Frame;
+
 	private:
 		static spGame instance;
 
@@ -49,6 +51,7 @@ namespace Halley {
 	protected:
 		virtual void Init()=0;
 		virtual void DeInit()=0;
+		virtual spFrame CreateFrame(String frameName)=0;
 		void SetTopFrame(spFrame frame);
 
 		void Quit();
