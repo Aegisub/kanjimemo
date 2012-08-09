@@ -1,0 +1,34 @@
+
+# /
+/Release
+/Debug
+/*.suo
+/*.ncb
+
+# /bin/
+/bin/*.*
+
+# /bin/data/
+/bin/data/*.*
+
+# /halley/
+/halley/Release
+/halley/Debug
+/halley/*.user
+
+# /japanese_lib/
+/japanese_lib/Release
+/japanese_lib/*.user
+/japanese_lib/Debug
+
+# /kanjimemo/
+/kanjimemo/Release
+/kanjimemo/Debug
+/kanjimemo/*.user
+/kanjimemo/jmdict.zip
+/kanjimemo/kanjidic2.zip
+
+# /lib_test/
+/lib_test/Release
+/lib_test/Debug
+/lib_test/*.user
